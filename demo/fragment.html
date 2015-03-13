@@ -1,0 +1,176 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MetaFragment - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<h1>MetaJS Demo - MetaFragment</h1>
+
+		<div id="code">
+			<pre id="source" class="brush: js"></pre>
+		</div>
+
+		<div id="example">
+
+			<!-- DEFINE FRAGMENT VIEW -->
+			<template is="meta-view" name="my-fragment-view">
+				<style>
+					
+					li {
+						cursor: pointer;
+					}
+
+					li[complete="true"]{
+						text-decoration: line-through;
+						color: #999999;
+					}
+
+				</style>
+
+				<p>
+					<input type="text" id="todo-task" placeholder="To-do" />
+				</p>
+				<p>
+					<button>Add to-do</button>
+				</p>
+				<h3>List</h3>
+				{{#if todos}}
+				<ul>
+					{{#each todos}}
+					<li index="{{@key}}" complete="{{record.complete}}">{{@root.row record}}</li>
+					{{/each}}
+				</ul>
+				{{else}}
+				<p>(empty)</p>
+				{{/if}}
+			</template>
+
+			<h2>To-do list</h2>
+			<p class="description">Sample to-do list. Click on item to mark it as complete.</p>
+
+			<div id="fragment-code" class="case">
+				<!--
+					<meta-fragment name="my-fragment">
+						<template is="meta-view" id="row-template">
+							<strong>{{task}}</strong> <em>{{formatDate date}}</em>
+						</template>
+					</meta-fragment>
+				-->
+			</div>
+
+			<h2>Lazy import</h2>
+			<p class="description">Fragment 'lazy-fragment' is not imported so script tries to load .html file with fragment name.</p>
+
+			<div id="lazy-fragment-code" class="case">
+				<!--
+					<meta-fragment name="lazy-fragment"></meta-fragment>
+				-->
+			</div>
+
+			<!-- DEFINE FRAGMENT -->
+			<script type="text/javascript">
+
+				/*
+				 * Register fragment
+				 */
+				Meta.Fragment('my-fragment', {
+
+					view: 'my-fragment-view',
+
+					constructor: function(){
+
+						//Define model properties
+						this.view.model.todos = [];
+
+						//We want to use custom-row template
+						this.view.model.row = function(record){
+							return record.task;
+						}
+
+						/*
+						 * Bind events
+						 */
+
+						//Add to-do
+						this.view.on("click", "button", function(){
+
+							this.model.todos.unshift({
+								record: {
+									task: this.querySelector("#todo-task").value,
+									date: new Date(),
+									complete: false
+								}
+							});
+
+							this.render();
+
+						});
+
+						//Mark complete / incomplete
+						this.view.on("click", "li", function(ev){
+
+							var record = this.model.todos[ ev.sender.getAttribute("index") ].record;
+							record.complete = !record.complete;
+
+							//Model observer is not deep, so wa must re-render manually
+							this.render();
+
+						});
+
+						/*
+						 * Custom row template
+						 */
+						rowTpl = this.querySelector('#row-template');
+
+						if(rowTpl)
+							this.view.model.row = function(record){
+
+								return new Handlebars.SafeString( rowTpl.template(record) );
+
+							}
+
+					}
+
+				});
+
+				//Register handlebars date helper
+				Handlebars.registerHelper('formatDate', function(date) {
+					return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
+				});
+
+				function init(){
+					document.getElementById("fragment-code").innerHTML = '<meta-fragment name="my-fragment"><template is="meta-view" id="row-template"><strong>{{task}}</strong> <em>{{formatDate date}}</em></template></meta-fragment>';
+					document.getElementById("lazy-fragment-code").innerHTML = '<meta-fragment name="lazy-fragment"></meta-fragment>';
+				}
+
+			</script>
+
+		</div>
+
+		<div class="clear"></div>
+
+		<script type="text/javascript">
+
+			function sanitize(input){
+
+				var open = new RegExp("<", "g");
+				var close = new RegExp("<", "g");
+
+				return input.replace(open, '&lt;').replace(close, '&gt;')
+
+			}
+
+			document.getElementById('source').innerHTML = sanitize(document.getElementById('example').innerHTML);
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		    init();
+
+		</script>
+
+	</body>
+</html>

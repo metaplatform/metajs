@@ -1,0 +1,149 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MetaView - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<h1>MetaJS Demo - MetaView</h1>
+
+		<div id="code">
+			<pre id="source" class="brush: js"></pre>
+		</div>
+
+		<div id="example">
+
+			<!-- DEFINE VIEW -->
+			<template is="meta-view" name="my-view">
+				<p>This is meta-view template content where X = {{x}}</p>
+				<p>
+					<button>Try to click me!</button>
+				</p>
+			</template>
+
+			<!-- TEXT RENDER DEMO -->
+			<h2>Text (static) render</h2>
+			<div id="text-render" class="case"></div>
+
+			<!-- DOM RENDER DEMO -->
+			<h2>DOM (dynamic) render</h2>
+			<p class="description">View instance automatically handles event-rebinds and provides model observer which automatically re-renders entire template.</p>
+			<div id="dom-render" class="case"></div>
+
+			<!-- NAME-REFERENCED DEMO -->
+			<h2>Name referenced view</h2>
+			<p class="description">When meta-view template has <strong>name</strong> attribute then it's accessible using global Meta registry array.</p>
+			<div id="referenced-view" class="case"></div>
+
+			<!-- INIT -->
+			<script type="text/javascript">
+
+				/*
+				 * Text render
+				 */
+				function case1(){
+
+					//Get view
+					var view = document.querySelector('template[name="my-view"]');
+
+					//Initialize model
+					var staticModel = { x: 0 };
+
+					//Define render function
+					function textRender(){
+						
+						//Render template
+						document.getElementById('text-render').innerHTML = view.template(staticModel);
+
+						//Rebinf events
+						document.getElementById('text-render').querySelector("button").addEventListener("click", function(){
+							staticModel.x++;
+							textRender();
+						});
+
+					}
+
+					//Do the first render
+					textRender();
+
+				}
+
+				/*
+				 * DOM render
+				 */
+				function case2(){
+
+					//Get view
+					var view = document.querySelector('template[name="my-view"]');
+
+					//Define DOM target & create view instance
+					var target = document.getElementById('dom-render');
+					var instance = view.instance(target);
+
+					//Initialize model
+					instance.model.x = 0;
+
+					//Bind events
+					instance.on("click", "button", function(){
+						this.model.x++;
+					});
+
+					//Do the first render
+					instance.render();
+
+					//Activate model observer which automatically re-renders view
+					instance.observe();
+
+				}
+
+				/*
+				 * Name-referenced view
+				 */
+				function case3(){
+
+					var target = document.getElementById('referenced-view');
+					var instance = Meta.views["my-view"].instance(target);
+
+					instance.model.x = 0;
+
+					instance.on("click", "button", function(){
+						this.model.x++;
+					});
+
+					instance.render();
+					instance.observe();
+
+				}
+
+			</script>
+
+		</div>
+
+		<div class="clear"></div>
+
+		<script type="text/javascript">
+
+			function sanitize(input){
+
+				var open = new RegExp("<", "g");
+				var close = new RegExp("<", "g");
+
+				return input.replace(open, '&lt;').replace(close, '&gt;')
+
+			}
+
+			document.getElementById('source').innerHTML = sanitize(document.getElementById('example').innerHTML);
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		    case1();
+		    case2();
+		    case3();
+
+		</script>
+
+	</body>
+</html>

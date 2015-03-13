@@ -1,0 +1,33 @@
+<html>
+
+	<!-- DEFINE FRAGMENT VIEW -->
+	<template is="meta-view" name="lazy-fragment-view">
+		<p>Iam lazy fragment!</p>
+		<button>You've pushed me {{x}} times!</button>
+	</template>
+
+	<!-- DEFINE FRAGMENT -->
+	<script type="text/javascript">
+
+		/*
+		 * Register fragment
+		 */
+		Meta.Fragment('lazy-fragment', {
+
+			view: 'lazy-fragment-view',
+
+			constructor: function(){
+
+				this.view.model.x = 0;
+
+				this.view.on("click", "button", function(){
+					this.model.x++;
+				});
+
+			}
+
+		});
+
+	</script>
+
+</html>
