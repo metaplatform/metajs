@@ -6,7 +6,7 @@ MetaJS is using experimental HTML5 WebComponent features which are not part of l
 **MetaJS currently works only in Google Chrome.**
 
 ## meta-view
-Meta view is smart template component which implements **Handlebars** templating engine and supports dynamic event binding with basic object observer.
+Meta view is smart template component which implements [Handlebars](http://handlebarsjs.com/) templating engine and supports dynamic event binding with basic object observer.
 
 ```
 <template is="meta-view" name="my-view">
