@@ -40,7 +40,7 @@ Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.m
 
 ## TO-DO
 - Meta-services API client
-- Messaging system (subsribe / publish pattern)
+- Messaging system (subscribe / publish pattern)
 - Content providers
 
 ## License
