@@ -19,21 +19,22 @@ MetaJS is in early stage of development, API may change.
 
 ## MetaJS components
 
-**View**  
+### View
 View is HTML template using [Handlebars](http://handlebarsjs.com/) as templating engine and supports data-binding and auto-render using model observer.
 
-**Fragment**  
+### Fragment
 Fragment is basic reusable UI block which is using Views and adds a view logic.  
 Example usage: header, toolbar, search box, list view, etc...
 
-**Activity**  
+### Activity
 Activity extends fragment and provides top UI element for specific user-experience.  
 Example usage: customer list, customer detail, user account, etc...
 
-**Utilities**  
+## Utilities
 Usefull utility functions which are used by other MetaJS components.
 
-**See demos for working example and advanced usage.**
+## Demo
+See **demo** directory for working examples and advanced usage.
 
 Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
