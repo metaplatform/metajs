@@ -1,0 +1,190 @@
+<html>
+
+	<template is="meta-view" name="com.example.todo.TodoActivity">
+
+		<style>
+
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			:host {
+				display: block;
+				font-size: 14px;
+			}
+
+			ul {
+				list-style: none;
+			}
+
+			ul li {
+				padding: 10px;
+				border-bottom: 1px solid #cccccc;
+				cursor: pointer;
+			}
+
+			ul li:hover {
+				background: #f3f3f3;
+			}
+
+			ul li.completed {
+				color: #aaaaaa;
+				text-decoration: line-through;
+			}
+
+			ul li .remove {
+				display: none;
+				float: right;
+				color: #ff0000;
+				cursor: pointer;
+			}
+
+			ul li:hover .remove {
+				display: inline-block;
+			}
+
+			ul li .remove:hover {
+				text-decoration: underline;
+			}
+
+			ul li.add {
+				padding: 0px;
+			}
+
+			ul li.add input {
+				border: 0px none;
+				background: #ffffff;
+				box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+				padding: 10px;
+				box-sizing: border-box;
+				width: 100%;
+			}
+
+			p.no-list {
+				padding: 50px;
+				text-align: center;
+				font-size: 18px;
+				font-weight: 100;
+				color: #999999;
+			}
+
+		</style>
+
+		{{#ifset todoList}}
+		<ul>
+			<li class="add">
+				<input type="text" id="todo-name" name="todo_name" placeholder="Add new to-do" />
+			</li>
+			{{#each @root.todoList}}
+			<li index="{{@key}}" class="{{#if completed}}completed{{/if}}">
+				<span class="remove">Remove</span>
+				<span class="name">{{task}}</span>
+			</li>
+			{{/each}}
+		</ul>
+		{{/ifset}}
+
+		{{#ifnotset todoList}}
+		<p class="no-list">Please select a to-do list.</p>
+		{{/ifnotset}}
+
+	</template>
+
+	<script type="text/javascript">
+
+		Meta.Activity('com.example.todo.TodoActivity', {
+
+			view: 'com.example.todo.TodoActivity',
+
+			onCreate: function(self){
+
+				self.model.state = {
+					activeList: 0
+				};
+
+				self.model.todoList = null;
+
+				//Add item
+				self.view.on("keypress", "#todo-name", function(ev){
+
+					if(ev.which != 13) return;
+
+					var name = this.$["todo-name"].value;
+
+					if(name == "") return;
+
+					self.todoModel.addTodo(self.model.state.activeList, name);
+
+					this.render();
+
+				});
+
+				//Remove list
+				self.view.on("click", ".remove", function(ev){
+
+					ev.preventDefault();
+					ev.stopPropagation();
+
+					var index = ev.sender.parentElement.getAttribute("index");
+
+					self.todoModel.removeTodo(self.model.state.activeList, index);
+
+				});
+
+				//Mark complete / incomplete
+				self.view.on("click", "li[index]", function(ev){
+
+					var index = ev.sender.getAttribute("index");
+
+					self.todoModel.markTodo(self.model.state.activeList, index);
+
+					this.render();
+
+				})
+
+			},
+
+			onReady: function(self){
+
+				self.todoModel = self.parentModel.todoModel;
+				self.model.state = self.parentModel.state;
+
+				var updateList = function(){
+
+					if(self.model.state.activeList === null){
+						self.model.todoList = null;
+						return;
+					}
+
+					self.model.todoList = self.parentModel.todoModel.data[ self.model.state.activeList ].items;
+
+					self.observe(self.model.todoList);
+
+				};
+
+				Object.observe(self.model.state, updateList);
+				updateList();
+
+
+			}
+
+		});
+
+		Handlebars.registerHelper('ifset', function(value, options) {
+			if(value)
+				return options.fn();
+			else
+				return "";
+		});
+
+		Handlebars.registerHelper('ifnotset', function(value, options) {
+			if(!value)
+				return options.fn();
+			else
+				return "";
+		});
+
+	</script>
+
+</html>

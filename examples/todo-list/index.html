@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MetaJS Demo</title>
+
+		<script type="text/javascript" src="../../handlebars-v3.0.0.min.js"></script>
+
+		<script type="text/javascript" src="../../lib/utils.js"></script>
+		<script type="text/javascript" src="../../lib/view.js"></script>
+		<script type="text/javascript" src="../../lib/fragment.js"></script>
+		<script type="text/javascript" src="../../lib/activity.js"></script>		
+
+		<script type="text/javascript">
+
+			Meta.config.importPrefix = "modules/";
+
+			Meta.Utils.import("main-activity", function(){
+
+				document.getElementById('app').innerHTML = '<meta-activity name="com.example.todo.MainActivity" ready></meta-activity>';
+
+			});
+
+		</script>
+
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<header>
+			<h1>To-do list example</h1>
+			<p>Example of using MetaJS to build complete application. Example uses local storage.</p>
+		</header>
+
+		<section id="app"></section>
+
+	</body>
+</html>

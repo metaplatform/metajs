@@ -1,0 +1,159 @@
+<html>
+
+	<template is="meta-view" name="com.example.todo.ListActivity">
+
+		<style>
+
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			:host {
+				display: block;
+				font-size: 14px;
+			}
+
+			ul {
+				list-style: none;
+			}
+
+			ul li {
+				padding: 10px;
+				border-bottom: 1px solid #cccccc;
+				cursor: pointer;
+			}
+
+			ul li:hover {
+				background: #f3f3f3;
+			}
+
+			ul li.current,
+			ul li.current:hover {
+				background: #2196F3;
+				color: #ffffff;
+			}
+
+			ul li .remove {
+				display: none;
+				float: right;
+				color: #ff0000;
+				cursor: pointer;
+			}
+
+			ul li.current .remove {
+				color: #ffffff;
+			}
+
+			ul li:hover .remove {
+				display: inline-block;
+			}
+
+			ul li .remove:hover {
+				text-decoration: underline;
+			}
+
+			ul li.add {
+				padding: 0px;
+			}
+
+			ul li.add input {
+				border: 0px none;
+				background: #ffffff;
+				box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+				padding: 10px;
+				box-sizing: border-box;
+				width: 100%;
+			}
+
+		</style>
+
+		<ul>
+			<li class="add">
+				<input type="text" id="list-name" name="list_name" placeholder="Add new list" />
+			</li>
+		{{#each listItems}}
+			<li index="{{@key}}" class="{{#isactive @key}}current{{/isactive}}">
+				<span class="remove">Remove</span>
+				<span class="name">{{name}}</span>
+			</li>
+		{{/each}}
+		</ul>
+
+	</template>
+
+	<script type="text/javascript">
+
+		Meta.Activity('com.example.todo.ListActivity', {
+
+			view: 'com.example.todo.ListActivity',
+
+			onCreate: function(self){
+
+				self.model.listItems = {};
+				self.model.state = {};
+
+				//Add list
+				self.view.on("keypress", "#list-name", function(ev){
+
+					if(ev.which != 13) return;
+
+					var name = this.$["list-name"].value;
+
+					if(name == "") return;
+
+					self.todoModel.addList(name);
+
+				});
+
+				//Remove list
+				self.view.on("click", ".remove", function(ev){
+
+					ev.preventDefault();
+					ev.stopPropagation();
+
+					var index = ev.sender.parentElement.getAttribute("index");
+
+					self.todoModel.removeList(index);
+
+					if(index == self.model.state.activeList)
+						if(self.model.listItems[0])
+							self.model.state.activeList = 0;
+						else
+							self.model.state.activeList = null;
+
+				});
+
+				//Switch list
+				self.view.on("click", "li[index]", function(ev){
+
+					self.model.state.activeList = ev.sender.getAttribute("index");
+
+				})
+
+			},
+
+			onReady: function(self){
+
+				self.todoModel = self.parentModel.todoModel;
+
+				self.model.listItems = self.todoModel.data;
+				self.model.state = self.parentModel.state;
+
+				self.observe(self.model.listItems);
+				self.observe(self.model.state);
+
+			}
+
+		});
+
+		Handlebars.registerHelper('isactive', function(name, options) {
+			if(options.data.root.state.activeList == name)
+				return options.fn();
+			else
+				return "";
+		});
+
+	</script>
+
+</html>

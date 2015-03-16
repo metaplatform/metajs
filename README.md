@@ -38,10 +38,14 @@ See **demo** directory for working examples and advanced usage.
 
 Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
+## Example apps
+Todo-list is available in **examples** directory or [Todo-list on MetaPlatform's repository](http://repo.meta-platform.com/metajs/examples/todo-list/)
+
 ## TO-DO
 - Meta-services API client
 - Messaging system (subscribe / publish pattern)
 - Content providers
+- Activity / Fragment modal dialogs
 
 ## License
 MetaJS is licensed under MIT license - see [LICENSE.md](./LICENSE.md)

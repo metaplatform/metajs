@@ -1,0 +1,66 @@
+<html>
+
+	<template is="meta-view" name="com.example.todo.MainActivity">
+
+		<style>
+
+			#wrap {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				top: 143px;
+				bottom: 0px;
+				z-index: 0;
+			}
+
+			#lists {
+				position: absolute;
+				left: 0px;
+				width: 300px;
+				top: 0px;
+				bottom: 0px;
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+
+			#todo {
+				position: absolute;
+				left: 300px;
+				right: 0px;
+				top: 0px;
+				bottom: 0px;
+				box-shadow: -2px 0px 8px rgba(0, 0, 0, 0.15);
+			}
+
+		</style>
+
+		<div id="wrap">
+			<meta-activity name="com.example.todo.ListActivity" id="lists"></meta-activity>
+			<meta-activity name="com.example.todo.TodoActivity" id="todo"></meta-activity>
+		</div>
+
+	</template>
+
+	<script type="text/javascript">
+
+		Meta.Activity('com.example.todo.MainActivity', {
+
+			import: [ "model", "list-activity", "todo-activity" ],
+
+			view: 'com.example.todo.MainActivity',
+
+			onCreate: function(self){
+
+				self.model.todoModel = new TodoModel();
+				
+				self.model.state = {
+					activeList: 0
+				}
+
+			}
+
+		});
+
+	</script>
+
+</html>
