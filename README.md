@@ -46,4 +46,6 @@ Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.m
 ## License
 MetaJS is licensed under MIT license - see [LICENSE.md](./LICENSE.md)
 
+Handlebars library included in this project is licensed under MIT license. See [handlebarsjs.com](http://handlebarsjs.com/).
+
 Copyright (c) Jiri Hybek, jiri.hybek@cryonix.cz
