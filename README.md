@@ -30,7 +30,7 @@ Example usage: header, toolbar, search box, list view, etc...
 Activity extends fragment and provides top UI element for specific user-experience.  
 Example usage: customer list, customer detail, user account, etc...
 
-## Utilities
+### Utilities
 Usefull utility functions which are used by other MetaJS components.
 
 ## Demo
