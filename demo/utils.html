@@ -1,0 +1,167 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MetaUtils - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Utils</h1>
+			<p class="label">Usefull utility functions which are used by other MetaJS components.</p>
+			<p>Utils library provides: Dynamic module imports, Batch calls, Element hashmaps</p>
+		</header>
+
+		<section id="main">
+
+			<!-- CODE -->
+			<div id="code">
+				<h2>Module import</h2>
+				<pre id="source-import" class="brush: js"></pre>
+
+				<h2>Batch call</h2>
+				<pre id="source-batch" class="brush: js"></pre>
+
+				<h2>Element hashmap</h2>
+				<pre id="source-hashmap" class="brush: js"></pre>
+			</div>
+
+			<div id="example">
+
+				<h2>Module import</h2>
+				<section class="description">
+					<p>Import modules dynamically.</p>
+				</section>
+				
+				<div id="import-result" class="case">
+					<p><span class="key">Should success:</span> <span id="import-1"></span></p>
+					<p><span class="key">Should fail:</span> <span id="import-2"></span></p>
+				</div>
+				
+				<h2>Batch function call</h2>
+				<section class="description">
+					<p>Call function for each item in array with callback flow.</p>
+				</section>
+
+				<div id="batch-result" class="case">
+					<ul class="result-list"></ul>
+					<p></p>
+				</div>
+
+				<h2>Elements hashmap by IDs</h2>
+				<section class="description">
+					<p>Generate hashmap of "pointers" to elements by its ID.</p>
+				</section>
+
+				<div id="hashmap-result" class="case">
+					<ul class="result-list"></ul>
+				</div>
+
+				<!-- IMPORT EXAMPLE -->
+				<div id="example-import">
+					<script type="text/javascript">
+
+						function exampleImport(){
+
+							var importResult1 = document.getElementById("import-1");
+							var importResult2 = document.getElementById("import-2");
+
+							Meta.Utils.importMany([ "demo-fragment", "demo-activity" ], function(){
+								importResult1.innerHTML = '<span class="success">Success</span>';
+							}, function(err){
+								importResult1.innerHTML = '<span class="fail">Failed</span>';
+							});
+
+							Meta.Utils.import("non-existent", function(){
+								importResult2.innerHTML = '<span class="success">Success</span>';
+							}, function(err){
+								importResult2.innerHTML = '<span class="fail">Failed</span>';
+							});
+
+						}
+
+					</script>
+				</div>
+
+				<!-- BATCH EXAMPLE -->
+				<div id="example-batch">
+					<script type="text/javascript">
+
+						function exampleBatch(){
+						
+							var batchItems = [ "item1", "item2", "item3" ]
+							var batchResults = document.querySelector("#batch-result ul");
+							var batchStatus = document.querySelector("#batch-result p");
+
+							var batchNext = function(item, next){
+
+								var li = document.createElement('li');
+								li.innerHTML = item;
+
+								batchResults.appendChild(li);
+
+								next();
+
+							}
+
+							Meta.Utils.batch(batchItems, batchNext, function(err){
+
+								if(err)
+									batchStatus.innerHTML = '<span class="fail">Failed</span>';
+								else
+									batchStatus.innerHTML = '<span class="success">Success</span>';
+
+							});
+
+						}
+
+					</script>
+				</div>
+
+				<!-- HASHMAP EXAMPLE -->
+				<div id="example-hashmap">
+					<script type="text/javascript">
+
+						function exampleHashmap(){
+
+							var hashmap = Meta.Utils.idHashmap( document.getElementById('example') );
+							var hashmapResults = document.querySelector("#hashmap-result ul");
+
+							for(var i in hashmap){
+
+								var li = document.createElement('li');
+								li.innerHTML = i;
+
+								hashmapResults.appendChild(li);
+
+							}
+
+						}
+
+					</script>
+				</div>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</section>
+
+		<script type="text/javascript">
+
+			demoCode('example-import', 'source-import');
+			demoCode('example-batch', 'source-batch');
+			demoCode('example-hashmap', 'source-hashmap');
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		    exampleImport();
+		    exampleBatch();
+		    exampleHashmap();
+
+		</script>
+
+	</body>
+</html>

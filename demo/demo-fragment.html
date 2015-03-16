@@ -1,0 +1,86 @@
+<html>
+
+	<!-- DEFINE FRAGMENT VIEW -->
+	<template is="meta-view" name="com.example.itemList">
+
+		<style>
+
+			ul {
+				list-style: none;
+				padding: 0px;
+				margin: 0px;
+				border-top: 1px solid #dddddd;
+			}
+			
+			li {
+				cursor: pointer;
+				padding: 8px;
+				font-weight: 300;
+				border-bottom: 1px solid #dddddd;
+			}
+
+			li:hover {
+				background: #f3f3f3;
+			}
+
+			li[complete="true"]{
+				text-decoration: line-through;
+				color: #999999;
+			}
+
+			.empty {
+				font-style: italic;
+				color: #aaaaaa;
+			}
+
+		</style>
+
+		<ul>
+			{{#each todos}}
+			<li index="{{@key}}" complete="{{complete}}"><strong>{{task}}</strong> <em>{{formatDate date}}</em></li>
+			{{/each}}
+		</ul>
+
+	</template>
+
+	<!-- DEFINE FRAGMENT -->
+	<script type="text/javascript">
+
+		/*
+		 * Register fragment
+		 */
+		Meta.Fragment('com.example.itemList', {
+
+			view: 'com.example.itemList',
+
+			onCreate: function(self){
+
+				//Define model properties
+				self.model.todos = [];
+
+				//Mark complete / incomplete
+				self.view.on("click", "li", function(ev){
+
+					var record = this.model.todos[ ev.sender.getAttribute("index") ];
+					record.complete = !record.complete;
+
+					//Model observer is not deep, so we must re-render manually
+					this.render();
+
+				});
+
+				//Observe todos
+				self.observe(self.model.todos);
+
+			}
+
+		});
+
+		//Register handlebars date helper
+		Handlebars.registerHelper('formatDate', function(date) {
+			return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
+		});
+
+	</script>
+
+</html>

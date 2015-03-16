@@ -1,169 +1,222 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>MetaFragment - MetaJS Demo</title>
+		<title>Fragment - MetaJS Demo</title>
 		
 		<link rel="import" href="bootstrap.html" />
 	</head>
 
 	<body>
-		<h1>MetaJS Demo - MetaFragment</h1>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Fragment</h1>
+			<p class="label">Fragment is reusable UI block which is using Views and adds a view logic.</p>
+			<p>Fragments provides UI blocks for reusable components, for example: header, toolbar, search box, list view, etc...</p>
+		</header>
 
-		<div id="code">
-			<pre id="source" class="brush: js"></pre>
-		</div>
+		<section id="main">
 
-		<div id="example">
+			<!-- CODE -->
+			<div id="code">
+				<h2>Fragment view</h2>
+				<pre id="source-view" class="brush: js"></pre>
 
-			<!-- DEFINE FRAGMENT VIEW -->
-			<template is="meta-view" name="my-fragment-view">
-				<style>
-					
-					li {
-						cursor: pointer;
-					}
+				<h2>Fragment definition</h2>
+				<pre id="source-fragment" class="brush: js"></pre>
 
-					li[complete="true"]{
-						text-decoration: line-through;
-						color: #999999;
-					}
+				<h2>HTML</h2>
+				<pre id="source-html" class="brush: js"></pre>
+			</div>
 
-				</style>
 
-				<p>
-					<input type="text" id="todo-task" placeholder="To-do" />
-				</p>
-				<p>
-					<button>Add to-do</button>
-				</p>
-				<h3>List</h3>
-				{{#if todos}}
-				<ul>
-					{{#each todos}}
-					<li index="{{@key}}" complete="{{record.complete}}">{{@root.row record}}</li>
-					{{/each}}
-				</ul>
-				{{else}}
-				<p>(empty)</p>
-				{{/if}}
-			</template>
+			<div id="example">
 
-			<h2>To-do list</h2>
-			<p class="description">Sample to-do list. Click on item to mark it as complete.</p>
+				<h2>To-do list</h2>
+				<section class="description">
+					<p>Sample to-do list. Click on an item to mark it as complete.</p>
+					<p>This example also show usage of fragment config via light-dom. In this case custom template for todo-row is passed to the fragment.</p>
+				</section>
 
-			<div id="fragment-code" class="case">
-				<!--
-					<meta-fragment name="my-fragment">
+				<div id="fragment-code" class="case">
+					<!-- SHOW<meta-fragment name="com.example.myFragment">
 						<template is="meta-view" id="row-template">
 							<strong>{{task}}</strong> <em>{{formatDate date}}</em>
 						</template>
-					</meta-fragment>
-				-->
-			</div>
+					</meta-fragment>SHOW -->
+				</div>
 
-			<h2>Lazy import</h2>
-			<p class="description">Fragment 'lazy-fragment' is not imported so script tries to load .html file with fragment name.</p>
+				<!-- DEFINE FRAGMENT VIEW -->
+				<div id="fragment-view">
+					<template is="meta-view" name="com.example.myFragment">
+					
+						<style>
+							
+							h3 {
+								margin-bottom: 8px;
+								padding-left: 8px;
+							}
 
-			<div id="lazy-fragment-code" class="case">
-				<!--
-					<meta-fragment name="lazy-fragment"></meta-fragment>
-				-->
-			</div>
+							input {
+								float: left;
+								margin-right: 5px;
+								padding: 8px;
+								border: 1px solid #cccccc;
+								background: #ffffff;
+								box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+							}
 
-			<!-- DEFINE FRAGMENT -->
-			<script type="text/javascript">
+							button {
+								padding: 7px 10px;
+							}
 
-				/*
-				 * Register fragment
-				 */
-				Meta.Fragment('my-fragment', {
+							p {
+								margin: 0px 0px 10px 0px;
+							}
 
-					view: 'my-fragment-view',
+							ul {
+								list-style: none;
+								padding: 0px;
+								margin: 0px;
+								border-top: 1px solid #dddddd;
+							}
+							
+							li {
+								cursor: pointer;
+								padding: 8px;
+								font-weight: 300;
+								border-bottom: 1px solid #dddddd;
+							}
 
-					constructor: function(){
+							li:hover {
+								background: #f3f3f3;
+							}
 
-						//Define model properties
-						this.view.model.todos = [];
+							li[complete="true"]{
+								text-decoration: line-through;
+								color: #999999;
+							}
 
-						//We want to use custom-row template
-						this.view.model.row = function(record){
-							return record.task;
-						}
+							.empty {
+								font-style: italic;
+								color: #aaaaaa;
+							}
+
+						</style>
+
+						<h3>My to-dos</h3>
+
+						<p>
+							<input type="text" id="todo-task" placeholder="To-do" />
+							<button>Add to-do</button>
+						</p>
+
+						<ul>
+							{{#each todos}}
+							<li index="{{@key}}" complete="{{record.complete}}">{{@root.row record}}</li>
+							{{/each}}
+						</ul>
+
+					</template>
+				</div>
+
+				<!-- DEFINE FRAGMENT -->
+				<div id="fragment-definition">
+					<script type="text/javascript">
 
 						/*
-						 * Bind events
+						 * Register fragment
 						 */
+						Meta.Fragment('com.example.myFragment', {
 
-						//Add to-do
-						this.view.on("click", "button", function(){
+							//If to create shadow-root (default: true)
+							shadowRoot: true,
 
-							this.model.todos.unshift({
-								record: {
-									task: this.querySelector("#todo-task").value,
-									date: new Date(),
-									complete: false
+							//If to observe model (default: true)
+							observeModel: true,
+
+							//Default view
+							view: 'com.example.myFragment',
+
+							onCreate: function(){
+
+								//Define model properties
+								this.view.model.todos = [];
+
+								//We want to use custom-row template
+								this.view.model.row = function(record){
+									return record.task;
 								}
-							});
 
-							this.render();
+								/*
+								 * Bind events
+								 */
+								//Add to-do
+								this.view.on("click", "button", function(){
 
-						});
+									this.model.todos.unshift({
+										record: {
+											task: this.querySelector("#todo-task").value,
+											date: new Date(),
+											complete: false
+										}
+									});
 
-						//Mark complete / incomplete
-						this.view.on("click", "li", function(ev){
+									this.render();
 
-							var record = this.model.todos[ ev.sender.getAttribute("index") ].record;
-							record.complete = !record.complete;
+								});
 
-							//Model observer is not deep, so wa must re-render manually
-							this.render();
+								//Mark complete / incomplete
+								this.view.on("click", "li", function(ev){
 
-						});
+									var record = this.model.todos[ ev.sender.getAttribute("index") ].record;
+									record.complete = !record.complete;
 
-						/*
-						 * Custom row template
-						 */
-						rowTpl = this.querySelector('#row-template');
+									//Model observer is not deep, so wa must re-render manually
+									this.render();
 
-						if(rowTpl)
-							this.view.model.row = function(record){
+								});
 
-								return new Handlebars.SafeString( rowTpl.template(record) );
+								/*
+								 * Custom row template
+								 */
+								rowTpl = this.querySelector('#row-template');
+
+								if(rowTpl)
+									this.view.model.row = function(record){
+										return new Handlebars.SafeString( rowTpl.template(record) );
+									}
 
 							}
 
+						});
+
+						//Register handlebars date helper
+						Handlebars.registerHelper('formatDate', function(date) {
+							return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
+						});
+
+					</script>
+				</div>
+
+				<script type="text/javascript">
+					
+					function init(){
+						document.getElementById("fragment-code").innerHTML = '<meta-fragment name="com.example.myFragment"><template is="meta-view" id="row-template"><strong>{{task}}</strong> <em>{{formatDate date}}</em></template></meta-fragment>';
 					}
 
-				});
+				</script>
 
-				//Register handlebars date helper
-				Handlebars.registerHelper('formatDate', function(date) {
-					return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
-				});
+			</div>
 
-				function init(){
-					document.getElementById("fragment-code").innerHTML = '<meta-fragment name="my-fragment"><template is="meta-view" id="row-template"><strong>{{task}}</strong> <em>{{formatDate date}}</em></template></meta-fragment>';
-					document.getElementById("lazy-fragment-code").innerHTML = '<meta-fragment name="lazy-fragment"></meta-fragment>';
-				}
+			<div class="clear"></div>
 
-			</script>
+		</section>
 
-		</div>
-
-		<div class="clear"></div>
 
 		<script type="text/javascript">
 
-			function sanitize(input){
-
-				var open = new RegExp("<", "g");
-				var close = new RegExp("<", "g");
-
-				return input.replace(open, '&lt;').replace(close, '&gt;')
-
-			}
-
-			document.getElementById('source').innerHTML = sanitize(document.getElementById('example').innerHTML);
+			demoCode('fragment-view', 'source-view');
+			demoCode('fragment-definition', 'source-fragment');
+			demoCode('fragment-code', 'source-html');
 
 			SyntaxHighlighter.defaults['html-script'] = true;
 		    SyntaxHighlighter.all();

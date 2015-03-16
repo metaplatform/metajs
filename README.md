@@ -1,63 +1,46 @@
 # MetaPlatform's MetaJS UI Framework
+MetaJS is pack of libraries which provides UI building blocks using web-components and HTML5 features.
 
 ## Warning
 MetaJS is using experimental HTML5 WebComponent features which are not part of living standard and is not fully suported by web browsers.
 
 **MetaJS currently works only in Google Chrome.**
 
-## meta-view
-Meta view is smart template component which implements [Handlebars](http://handlebarsjs.com/) templating engine and supports dynamic event binding with basic object observer.
+**Required features:**
+- Custom elements
+- HTML imports
+- HTML templates
+- Shadow DOM
+- Object.observe
 
-```
-<template is="meta-view" name="my-view">
-	<p>This is meta-view template content where X = {{x}}</p>
-	<p>
-		<button>Try to click me!</button>
-	</p>
-</template>
-```
+Maybe some polyfill library can help, but not tested yet.
 
-See demos for working example and advanced usage.
+MetaJS is in early stage of development, API may change.
 
-## meta-fragment
-Meta fragment implements view-logic.
+## MetaJS components
 
-```
-<!-- DEFINE FRAGMENT VIEW -->
-<template is="meta-view" name="my-fragment-view">
-	<p>Iam lazy fragment!</p>
-	<button>You've pushed me {{x}} times!</button>
-</template>
+**View**  
+View is HTML template using [Handlebars](http://handlebarsjs.com/)" as templating engine and supports data-binding and auto-render using model observer.
 
-<!-- DEFINE FRAGMENT -->
-<script type="text/javascript">
+**Fragment**  
+Fragment is basic reusable UI block which is using Views and adds a view logic.  
+Example usage: header, toolbar, search box, list view, etc...
 
-	/*
-	 * Register fragment
-	 */
-	Meta.Fragment('my-fragment', {
+**Activity**  
+Activity extends fragment and provides top UI element for specific user-experience.  
+Example usage: customer list, customer detail, user account, etc...
 
-		view: 'my-fragment-view',
+**Utilities**  
+Usefull utility functions which are used by other MetaJS components.
 
-		constructor: function(){
+**See demos for working example and advanced usage.**
 
-			this.view.model.x = 0;
-
-			this.view.on("click", "button", function(){
-				this.model.x++;
-			});
-
-		}
-
-	});
-
-</script>
-
-<!-- USE FRAGMENT -->
-<meta-fragment name="my-fragment"></meta-fragment>
-```
-
-See demos for working example and advanced usage.
+## TO-DO
+- Meta-services API client
+- Messaging system (subsribe / publish pattern)
+- Content providers
 
 ## License
-MIT
+MetaJS is licensed under MIT license - see [LICENSE.md](./LICENSE.md)
+
+Copyright (c) Jiri Hybek, jiri.hybek@cryonix.cz

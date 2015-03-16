@@ -1,0 +1,143 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Activity - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Activity</h1>
+			<p class="label">Activity extends fragment and provides top UI element.</p>
+			<p>Activity should represent specific user experience - for example: customer list, customer detail, user account, etc...</p>
+		</header>
+
+		<section id="main">
+
+			<!-- CODE -->
+			<div id="code">
+				<h2>Activity view</h2>
+				<pre id="source-view" class="brush: js"></pre>
+
+				<h2>Activity definition</h2>
+				<pre id="source-activity" class="brush: js"></pre>
+
+				<h2>HTML</h2>
+				<pre id="source-html" class="brush: js"></pre>
+			</div>
+
+			<!-- EXAMPLE SOURCE -->
+			<div id="example">
+
+				<h2>To-do list</h2>
+				<section class="description">
+					<p>Sample to-do list. Click on an item to mark it as complete.</p>
+					<p>This example uses <strong>itemList</strong> fragment which is imported from file <strong>demo-fragment.html</strong>.</p>
+				</section>
+
+				<div id="activity-code" class="case">
+					<!-- SHOW<meta-activity name="com.example.todoActivity"></meta-activity>SHOW -->
+				</div>
+
+				<div id="activity-view">
+					<template is="meta-view" name="com.example.todoActivity">
+
+						<style>
+							
+							h3 {
+								margin-bottom: 8px;
+								padding-left: 8px;
+							}
+
+							input {
+								float: left;
+								margin-right: 5px;
+								padding: 8px;
+								border: 1px solid #cccccc;
+								background: #ffffff;
+								box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+							}
+
+							button {
+								padding: 7px 10px;
+							}
+
+							p {
+								margin: 0px 0px 10px 0px;
+							}
+
+						</style>
+
+						<h3>My to-dos</h3>
+
+						<p>
+							<input type="text" id="todo-task" placeholder="To-do" />
+							<button>Add to-do</button>
+						</p>
+
+						<meta-fragment name="com.example.itemList" id="list"></meta-fragment>
+
+					</template>
+				</div>
+
+				<div id="activity-definition">
+					<script type="text/javascript">
+
+						Meta.Activity('com.example.todoActivity', {
+
+							import: ['demo-fragment'],
+
+							view: 'com.example.todoActivity',
+
+							onCreate: function(self){
+
+								//Add to-do
+								self.view.on("click", "button", function(){
+
+									this.$.list.model.todos.unshift({
+										task: this.$["todo-task"].value,
+										date: new Date(),
+										complete: false
+									});
+
+									this.$["todo-task"].value = '';
+
+								});
+
+							}
+
+						});
+
+					</script>
+				</div>
+
+				<script type="text/javascript">
+
+					function init(){
+						document.getElementById("activity-code").innerHTML = '<meta-activity name="com.example.todoActivity"></meta-activity>';
+					}
+
+				</script>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</section>
+
+		<script type="text/javascript">
+
+			demoCode('activity-code', 'source-html');
+			demoCode('activity-view', 'source-view');
+			demoCode('activity-definition', 'source-activity');
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+			SyntaxHighlighter.all();
+
+		    init();
+
+		</script>
+
+	</body>
+</html>

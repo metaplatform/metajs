@@ -1,0 +1,38 @@
+<html>
+
+	<!-- DEFINE FRAGMENT VIEW -->
+	<template is="meta-view" name="demo-activity-view">
+		<p>Iam demo activity!</p>
+		<button id="btn">You've pushed me {{x}} times!</button>
+	</template>
+
+	<!-- DEFINE FRAGMENT -->
+	<script type="text/javascript">
+
+		/*
+		 * Register fragment
+		 */
+		Meta.Fragment('demo-activity', {
+
+			view: 'demo-activity-view',
+
+			constructor: function(){
+
+				this.view.model.x = 0;
+
+				this.view.on("click", "button", function(){
+					console.log(this.view.$);
+					this.fireEvent("pushed");
+				}, this);
+
+				this.countOne = function(){
+					this.view.model.x++
+				};
+
+			}
+
+		});
+
+	</script>
+
+</html>

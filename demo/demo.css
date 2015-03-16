@@ -11,17 +11,85 @@ body {
 	font-size: 14px;
 	line-height: 1.4;
 	color: #333333;
-	padding: 40px;
 }
 
-h1 {
+a {
+	color: #1976D2;
+	-webkit-transition: color 0.2s;
+	transition: color 0.2s;
+}
+
+a:hover {
+	color: #F44336;
+}
+
+.clear {
+	clear: both;
+}
+
+strong {
+	font-weight: 400;
+	color: #000000;
+}
+
+/* HEADER */
+header {
+	padding: 30px;
+	background: #f5f5f5;
+}
+
+header h1 {
 	font-weight: 100;
-	font-size: 52px;
-	margin-bottom: 50px;
+	font-size: 48px;
 	line-height: 1.0;
 }
 
-h2 {
+header h1 a {
+	text-decoration: none;
+}
+
+header p {
+	padding-top: 16px;
+	font-weight: 300;
+}
+
+header p.label {
+	padding-top: 5px;
+	font-size: 19px;
+}
+
+/* MAIN WRAP */
+#main {
+	padding: 30px;	
+}
+
+#main .demo-item {
+	border-bottom: 1px solid #dddddd;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+
+#main .demo-item h2 {
+	font-weight: 300;
+	font-size: 30px;
+	margin-bottom: 8px;
+}
+
+#main .demo-item h2 a {
+	text-decoration: none;
+}
+
+#main .demo-item p {
+	color: #333333;
+	font-weight: 300;
+}
+
+/* EXAMPLE */
+#example {
+	margin-left: 880px;
+}
+
+#example h2 {
 	font-size: 30px;
 	font-weight: 300;
 	margin-bottom: 16px;
@@ -29,41 +97,70 @@ h2 {
 	color: #1976D2;
 }
 
-.case {
+#example .case {
 	margin-bottom: 50px;
 }
 
-p {
+#example p {
 	margin-bottom: 16px;
 }
 
-p.description {
+#example .description {
 	border-bottom: 1px solid #dddddd;
 	padding-bottom: 10px;
+	margin-bottom: 16px;
+}
+
+#example .description p {
 	font-weight: 300;
-	margin-bottom: 25px;
+	margin-top: 10px;
+	margin-bottom: 0px;
 }
 
-button {
-	padding: 10px;
+#example .result-list {
+	list-style: none;
+	margin-bottom: 20px;
 }
 
+#example .result-list li {
+	padding: 5px 10px;
+	border-left: 4px solid #cccccc;
+	margin-bottom: 3px;
+}
+
+#example .key {
+	display: inline-block;
+	width: 120px;
+}
+
+#example .success {
+	color: #558B2F;
+}
+
+#example .fail {
+	color: #ff0000;
+}
+
+/* CODE */
 #code {
-	width: 800px;
+	width: 820px;
 	float: left;
-	margin-right: 50px;
-	padding-right: 50px;
+	margin-right: 30px;
+	padding-right: 30px;
 	border-right: 1px solid #dddddd;
 }
 
-#example {
-	margin-left: 900px;
+#code h2 {
+	font-size: 24px;
+	font-weight: 300;
+	margin-bottom: 16px;
+	line-height: 1.0;
+	color: #1976D2;
+	border-bottom: 1px solid #dddddd;
+	padding-bottom: 8px;
 }
 
-.syntaxhighlighter {
+#code .syntaxhighlighter {
 	/*max-height: 480px;*/
-}
-
-.clear {
-	clear: both;
+	margin-bottom: 50px!important;
 }
