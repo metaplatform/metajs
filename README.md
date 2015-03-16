@@ -20,7 +20,7 @@ MetaJS is in early stage of development, API may change.
 ## MetaJS components
 
 **View**  
-View is HTML template using [Handlebars](http://handlebarsjs.com/)" as templating engine and supports data-binding and auto-render using model observer.
+View is HTML template using [Handlebars](http://handlebarsjs.com/) as templating engine and supports data-binding and auto-render using model observer.
 
 **Fragment**  
 Fragment is basic reusable UI block which is using Views and adds a view logic.  
@@ -34,6 +34,8 @@ Example usage: customer list, customer detail, user account, etc...
 Usefull utility functions which are used by other MetaJS components.
 
 **See demos for working example and advanced usage.**
+
+Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
 ## TO-DO
 - Meta-services API client
