@@ -4,20 +4,20 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>MetaJS Demo</title>
 
-		<script type="text/javascript" src="../../handlebars-v3.0.0.min.js"></script>
-
-		<script type="text/javascript" src="../../lib/utils.js"></script>
-		<script type="text/javascript" src="../../lib/view.js"></script>
-		<script type="text/javascript" src="../../lib/fragment.js"></script>
-		<script type="text/javascript" src="../../lib/activity.js"></script>		
+	<script type="text/javascript" src="../../lib/utils.js"></script>
+	<script type="text/javascript" src="../../lib/template.js"></script>
+	<script type="text/javascript" src="../../lib/view.js"></script>
+	<script type="text/javascript" src="../../lib/fragment.js"></script>
+	<script type="text/javascript" src="../../lib/activity.js"></script>
+	<script type="text/javascript" src="../../lib/providers.js"></script>	
 
 		<script type="text/javascript">
 
-			Meta.config.importPrefix = "modules/";
+			Meta.config.importPrefix = "modules/%module%.html";
 
 			Meta.Utils.import("main-activity", function(){
 
-				document.getElementById('app').innerHTML = '<meta-activity name="com.example.todo.MainActivity" ready></meta-activity>';
+				Meta.CreateActivity(document.getElementById('app'), "com.example.todo.MainActivity")
 
 			});
 

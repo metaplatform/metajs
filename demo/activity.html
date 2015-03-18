@@ -72,7 +72,7 @@
 						<h3>My to-dos</h3>
 
 						<p>
-							<input type="text" id="todo-task" placeholder="To-do" />
+							<input type="text" id="task" placeholder="To-do" />
 							<button>Add to-do</button>
 						</p>
 
@@ -92,18 +92,50 @@
 
 							onCreate: function(self){
 
-								//Add to-do
-								self.view.on("click", "button", function(){
+								var provider = new Meta.ObservingProvider({
+									todos: []
+								});
 
-									this.$.list.model.todos.unshift({
-										task: this.$["todo-task"].value,
+								this.model.todos = provider.todos;
+
+								provider.on("changed", function(data){
+
+									self.view.$.list.setItems(data.todos);
+
+								})
+
+							},
+
+							events: {
+
+								"click button": function(ev){
+
+									if(this.$.task.value == "") return;
+
+									this.model.todos.unshift({
+										task: this.$.task.value,
 										date: new Date(),
 										complete: false
 									});
 
-									this.$["todo-task"].value = '';
+									this.$.task.value = "";
 
-								});
+								},
+
+								"itemClick #list": function(ev){
+									
+									ev.item.complete = !ev.item.complete;
+
+								},
+
+								"itemRemove #list": function(ev){
+
+									var index = this.model.todos.indexOf(ev.item);
+
+									if(index >= 0)
+										this.model.todos.splice(index, 1);
+
+								}
 
 							}
 

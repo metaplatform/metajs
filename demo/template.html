@@ -1,0 +1,211 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Template - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+
+		<style>
+
+			.items.result-list li {
+				-webkit-transition: background 0.5s;
+				transition: background 0.5s;
+			}
+
+			.items.result-list li[new]{
+				background: #ffeeee;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Template</h1>
+			<p class="label">Pure JavaScript DOM templating.</p>
+			<p>This library provides templating function for conditionals, loops and data-binding right into DOM.</p>
+		</header>
+
+		<section id="main">
+
+			<!-- CODE -->
+			<div id="code">
+				<h2>HTML template</h2>
+				<pre id="source-html" class="brush: js"></pre>
+
+				<h2>Sample model definition</h2>
+				<pre id="source-model" class="brush: js"></pre>
+
+				<h2>Generate random model values</h2>
+				<pre id="source-randomize" class="brush: js"></pre>
+
+				<h2>Template binding</h2>
+				<pre id="source-bind" class="brush: js"></pre>
+			</div>
+
+			<div id="example">
+
+				<h2>Data binding</h2>
+				<section class="description">
+					<p>Binds variables by ID and classes, array, conditionals and events.</p>
+					<p>MetaJS templates handles model references so when item is added to an array, original DOM nodes persists even when elements order has changed.</p>
+					<p></p>
+				</section>
+				
+				<div id="example-binding" class="case">
+
+					<p>
+						<button class="one">Bind</button>
+					</p>
+
+					<div id="idVar">-</div>
+					<p class="classVar">-</p>
+
+					<ul class="items result-list">
+						<li>
+							<span class="item-key">key</span>
+							<span class="value">value</span>
+							<span class="cond">Conditional</span>
+						</li>
+					</ul>
+
+					<p class="random">Random state is > 5</p>
+
+					<p class="explicit">Explicit binding</p>
+
+					<div class="data">Data container</div>
+
+				</div>
+
+				<div id="script-model">
+					<script type="text/javascript">
+
+						var model = {
+							idVar: "Content by element ID (1)",
+							classVar: "Content by element class (1)",
+							items: [
+								{ key: "Key X", value: "Value X", completed: false },
+								{ key: "Key Y", value: "Value Y", completed: true }
+							],
+							random: 1,
+							data: { key: "value" }
+						}
+
+					</script>
+				</div>
+
+				<div id="script-randomize">
+					<script type="text/javascript">
+
+						function randomizeModel(){
+
+							model.items.shift();
+							
+							model.items[0].value = "Iam now first!";
+
+							for(var i = 0; i < model.items.length; i++)
+								model.items[i].newItem = false;
+
+							model.items.push({
+								key: "Key " + Math.round(Math.random() * 10),
+								value: "Value " + Math.round(Math.random() * 100),
+								completed: false,
+								hello: Math.round(Math.random()),
+								newItem: true
+							})
+
+							model.random = Math.round(Math.random() * 10);
+
+							console.log(model.items);
+
+						}
+
+					</script>
+				</div>
+
+				<div id="script-bind">
+					<script type="text/javascript">
+
+						function bind(){
+
+							randomizeModel();
+
+							Meta.Template.render( document.getElementById('example-binding'), {
+								
+								model: model,
+
+								map: {
+									"items.key": ".item-key",					//Bind model value as innerHTML to given selector
+									"items.completed": ".item-key@?completed",	//Bind model value as attribute to given selector only if attribute is positive
+									"items.newItem": "li@??new",				//Bind model empty attribute to given selector only if attribute is positive
+									"items._key": ".item-key@index",			//Bind model value as attribute to given selector
+									"items.cond": false,						//Don't bind value
+									"random": false,							//Don't bind value
+									"data": ".data$data"						//Bind model value as node property to given selector
+								},
+
+								filters: {
+									//Node value for given model is specified by filter function
+									"items.value": function(value){
+										return value.toUpperCase() + " (" + this.key + ")";
+									}
+								},
+
+								conditions: {
+									//Show node only if model value is positive
+									"items.cond": true,
+
+									//Show node only if function returns positive
+									"random": function(value){
+										return (value > 5 ? true : false);
+									}
+								},
+
+								events: {
+									"click .items li": function(ev){
+										ev.sender.classList.toggle("highlight");
+									},
+									"click .data": function(ev){
+										console.log("DATA", ev.sender.data);
+									}
+								},
+
+								bindings: {
+									".explicit": function(){
+										return Math.random();
+									}
+								}
+
+							});
+
+						}
+
+					</script>
+				</div>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</section>
+
+		<script type="text/javascript">
+
+			demoCode('example-binding', 'source-html');
+			demoCode('script-model', 'source-model');
+			demoCode('script-randomize', 'source-randomize');
+			demoCode('script-bind', 'source-bind');
+
+			document.querySelector("#example-binding button.one").addEventListener("click", function(){
+				bind();
+			});
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		    //exampleBinding();
+
+		</script>
+
+	</body>
+</html>

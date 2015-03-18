@@ -37,11 +37,7 @@
 				</section>
 
 				<div id="fragment-code" class="case">
-					<!-- SHOW<meta-fragment name="com.example.myFragment">
-						<template is="meta-view" id="row-template">
-							<strong>{{task}}</strong> <em>{{formatDate date}}</em>
-						</template>
-					</meta-fragment>SHOW -->
+					<!-- SHOW<meta-fragment name="com.example.myFragment"></meta-fragment>SHOW -->
 				</div>
 
 				<!-- DEFINE FRAGMENT VIEW -->
@@ -90,9 +86,15 @@
 								background: #f3f3f3;
 							}
 
-							li[complete="true"]{
+							li[complete]{
 								text-decoration: line-through;
 								color: #999999;
+							}
+
+							li .remove {
+								display: inline-block;
+								float: right;
+								color: #ff0000;
 							}
 
 							.empty {
@@ -109,10 +111,12 @@
 							<button>Add to-do</button>
 						</p>
 
-						<ul>
-							{{#each todos}}
-							<li index="{{@key}}" complete="{{record.complete}}">{{@root.row record}}</li>
-							{{/each}}
+						<ul class="todos">
+							<li>
+								<span class="remove">X</span>
+								<strong class="task"></strong>
+								<em class="date"></em>
+							</li>
 						</ul>
 
 					</template>
@@ -130,68 +134,64 @@
 							//If to create shadow-root (default: true)
 							shadowRoot: true,
 
-							//If to observe model (default: true)
-							observeModel: true,
-
 							//Default view
 							view: 'com.example.myFragment',
 
 							onCreate: function(){
 
 								//Define model properties
-								this.view.model.todos = [];
+								this.model.todos = [];
 
-								//We want to use custom-row template
-								this.view.model.row = function(record){
-									return record.task;
-								}
+							},
 
-								/*
-								 * Bind events
-								 */
-								//Add to-do
-								this.view.on("click", "button", function(){
+							map: {
+								"todos.complete": "li@??complete"
+							},
+
+							events: {
+
+								"click button": function(ev){
+
+									if(this.$["todo-task"].value == "") return;
 
 									this.model.todos.unshift({
-										record: {
-											task: this.querySelector("#todo-task").value,
-											date: new Date(),
-											complete: false
-										}
+										task: this.$["todo-task"].value,
+										date: new Date(),
+										complete: false
 									});
 
+									this.$["todo-task"].value = "";
+
 									this.render();
 
-								});
+								},
 
-								//Mark complete / incomplete
-								this.view.on("click", "li", function(ev){
+								"click .todos li": function(ev){
 
-									var record = this.model.todos[ ev.sender.getAttribute("index") ].record;
-									record.complete = !record.complete;
-
-									//Model observer is not deep, so wa must re-render manually
+									ev.sender._model.complete = !ev.sender._model.complete;
 									this.render();
 
-								});
+								},
 
-								/*
-								 * Custom row template
-								 */
-								rowTpl = this.querySelector('#row-template');
+								"click .todos li .remove": function(ev){
 
-								if(rowTpl)
-									this.view.model.row = function(record){
-										return new Handlebars.SafeString( rowTpl.template(record) );
-									}
+									ev.stopPropagation();
 
+									var item = ev.sender.parentElement._model;
+
+									this.model.todos.splice(this.model.todos.indexOf(item), 1);
+									this.render();
+
+								}
+
+							},
+
+							filters: {
+								"todos.date": function(date){
+									return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
+								}
 							}
 
-						});
-
-						//Register handlebars date helper
-						Handlebars.registerHelper('formatDate', function(date) {
-							return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
 						});
 
 					</script>
@@ -200,7 +200,7 @@
 				<script type="text/javascript">
 					
 					function init(){
-						document.getElementById("fragment-code").innerHTML = '<meta-fragment name="com.example.myFragment"><template is="meta-view" id="row-template"><strong>{{task}}</strong> <em>{{formatDate date}}</em></template></meta-fragment>';
+						document.getElementById("fragment-code").innerHTML = '<meta-fragment name="com.example.myFragment"></meta-fragment>';
 					}
 
 				</script>

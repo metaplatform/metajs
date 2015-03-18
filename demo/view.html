@@ -9,8 +9,7 @@
 	<body>
 		<header>
 			<h1><a href="index.html">MetaJS Demo</a> / View</h1>
-			<p class="label">View provides rich HTML templates.</p>
-			<p>View is HTML template using <a href="http://handlebarsjs.com/" target="_blank">Handlebars</a> as templating engine and supports data-binding and auto-render using model observer.</p>
+			<p class="label">View is wrapper for reusable MetaJS templates.</p>
 		</header>
 
 		<section id="main">
@@ -19,9 +18,6 @@
 			<div id="code">
 				<h2>View definition</h2>
 				<pre id="source-view" class="brush: js"></pre>
-
-				<h2>Text render</h2>
-				<pre id="source-text" class="brush: js"></pre>
 
 				<h2>DOM render</h2>
 				<pre id="source-dom" class="brush: js"></pre>
@@ -32,15 +28,10 @@
 
 			<div id="example">
 
-				<!-- TEXT RENDER DEMO -->
-				<h2>Text render</h2>
-				<section class="description">This example show manual text rendering of view.</section>
-				<div id="text-render" class="case"></div>
-
 				<!-- DOM RENDER DEMO -->
 				<h2>DOM render</h2>
 				<section class="description">
-					<p>View instance automatically handles event-rebinds and provides model observer which automatically re-renders entire template.</p>
+					<p>View instance automatically handles event-rebinds.</p>
 				</section>
 				<div id="dom-render" class="case"></div>
 
@@ -55,7 +46,7 @@
 				<div id="view-definition">
 					<template is="meta-view" name="com.example.myView">
 
-						<p>This is meta-view template content where X = {{x}}</p>
+						<p>This is meta-view template content where X = <span class="x">?</span></p>
 						
 						<p>
 							<button>Try to click me!</button>
@@ -73,42 +64,6 @@
 							//Get view
 							var view = document.querySelector('template[name="com.example.myView"]');
 
-							console.log("View", view);
-
-							//Initialize model
-							var staticModel = { x: 0 };
-
-							//Define render function
-							function textRender(){
-								
-								//Render template
-								document.getElementById('text-render').innerHTML = view.template(staticModel);
-
-								//Rebind events
-								document.getElementById('text-render').querySelector("button").addEventListener("click", function(){
-									staticModel.x++;
-									textRender();
-								});
-
-							}
-
-							//Do render
-							textRender();
-
-						}
-
-					</script>
-				</div>
-
-				<!-- CASE 2 -->
-				<div id="demo-case2">
-					<script type="text/javascript">
-
-						function case2(){
-
-							//Get view
-							var view = document.querySelector('template[name="com.example.myView"]');
-
 							//Define DOM target & create view instance
 							var target = document.getElementById('dom-render');
 							var instance = view.instance(target);
@@ -119,24 +74,22 @@
 							//Bind events
 							instance.on("click", "button", function(){
 								this.model.x++;
+								this.render();
 							});
 
 							//Do the first render
 							instance.render();
-
-							//Activate model observer which automatically re-renders view
-							instance.observe();
 
 						}
 
 					</script>
 				</div>
 
-				<!-- CASE 3 -->
-				<div id="demo-case3">
+				<!-- CASE 2 -->
+				<div id="demo-case2">
 					<script type="text/javascript">
 					
-						function case3(){
+						function case2(){
 
 							var target = document.getElementById('referenced-view');
 							var instance = Meta.views["com.example.myView"].instance(target);
@@ -145,10 +98,10 @@
 
 							instance.on("click", "button", function(){
 								this.model.x++;
+								this.render();
 							});
 
 							instance.render();
-							instance.observe();
 
 						}
 
@@ -165,16 +118,14 @@
 		<script type="text/javascript">
 
 			demoCode('view-definition', 'source-view');
-			demoCode('demo-case1', 'source-text');
-			demoCode('demo-case2', 'source-dom');
-			demoCode('demo-case3', 'source-reference');
+			demoCode('demo-case1', 'source-dom');
+			demoCode('demo-case2', 'source-reference');
 
 			SyntaxHighlighter.defaults['html-script'] = true;
 		    SyntaxHighlighter.all();
 
 		    case1();
 		    case2();
-		    case3();
 
 		</script>
 

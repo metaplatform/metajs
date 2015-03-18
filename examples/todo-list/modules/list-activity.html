@@ -12,24 +12,36 @@
 			:host {
 				display: block;
 				font-size: 14px;
+				padding: 20px;
+			}
+
+			h2 {
+				color: #2196F3;
+				font-weight: 300;
+				font-size: 22px;
+				margin-bottom: 10px;
+				padding-left: 12px;
 			}
 
 			ul {
 				list-style: none;
+				margin-bottom: 10px;
 			}
 
 			ul li {
-				padding: 10px;
-				border-bottom: 1px solid #cccccc;
+				padding: 10px 12px;
 				cursor: pointer;
+				margin-bottom: 2px;
+				border-radius: 3px;
+				line-height: 14px;
 			}
 
 			ul li:hover {
 				background: #f3f3f3;
 			}
 
-			ul li.current,
-			ul li.current:hover {
+			ul li[selected],
+			ul li[selected]:hover {
 				background: #2196F3;
 				color: #ffffff;
 			}
@@ -39,9 +51,10 @@
 				float: right;
 				color: #ff0000;
 				cursor: pointer;
+				font-size: 12px;
 			}
 
-			ul li.current .remove {
+			ul li[selected] .remove {
 				color: #ffffff;
 			}
 
@@ -53,32 +66,33 @@
 				text-decoration: underline;
 			}
 
-			ul li.add {
+			.add {
 				padding: 0px;
 			}
 
-			ul li.add input {
+			.add input {
 				border: 0px none;
 				background: #ffffff;
-				box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
 				padding: 10px;
 				box-sizing: border-box;
 				width: 100%;
+				border-bottom: 1px solid #cccccc;
 			}
 
 		</style>
 
-		<ul>
-			<li class="add">
-				<input type="text" id="list-name" name="list_name" placeholder="Add new list" />
-			</li>
-		{{#each listItems}}
-			<li index="{{@key}}" class="{{#isactive @key}}current{{/isactive}}">
+		<h2>To-do lists</h2>
+
+		<ul class="lists">
+			<li>
 				<span class="remove">Remove</span>
-				<span class="name">{{name}}</span>
+				<span class="name"></span>
 			</li>
-		{{/each}}
 		</ul>
+
+		<p class="add">
+			<input type="text" id="name" name="list_name" placeholder="Add new list" />
+		</p>
 
 	</template>
 
@@ -90,68 +104,57 @@
 
 			onCreate: function(self){
 
-				self.model.listItems = {};
-				self.model.state = {};
-
-				//Add list
-				self.view.on("keypress", "#list-name", function(ev){
-
-					if(ev.which != 13) return;
-
-					var name = this.$["list-name"].value;
-
-					if(name == "") return;
-
-					self.todoModel.addList(name);
-
-				});
-
-				//Remove list
-				self.view.on("click", ".remove", function(ev){
-
-					ev.preventDefault();
-					ev.stopPropagation();
-
-					var index = ev.sender.parentElement.getAttribute("index");
-
-					self.todoModel.removeList(index);
-
-					if(index == self.model.state.activeList)
-						if(self.model.listItems[0])
-							self.model.state.activeList = 0;
-						else
-							self.model.state.activeList = null;
-
-				});
-
-				//Switch list
-				self.view.on("click", "li[index]", function(ev){
-
-					self.model.state.activeList = ev.sender.getAttribute("index");
-
-				})
+				this.model.lists = [];
+				this.model.activeList;
 
 			},
 
-			onReady: function(self){
+			setLists: function(lists){
 
-				self.todoModel = self.parentModel.todoModel;
+				this.model.lists = lists;
+				this.render();
 
-				self.model.listItems = self.todoModel.data;
-				self.model.state = self.parentModel.state;
+			},
 
-				self.observe(self.model.listItems);
-				self.observe(self.model.state);
+			setActiveList: function(todoList){
 
+				this.model.activeList = todoList;
+				this.render();
+
+			},
+
+			events: {
+				
+				"click .lists li": function(ev){
+
+					this.fragment.fireEvent("selectList", { todoList: ev.sender._model });
+
+				},
+
+				"click .lists li .remove": function(ev){
+
+					ev.stopPropagation();
+					this.fragment.fireEvent("removeList", { todoList: ev.sender.parentElement._model });
+
+				},
+
+				"keypress #name": function(ev){
+
+					if(ev.which != 13) return;
+					if(this.$.name.value == "") return;
+
+					this.fragment.fireEvent("addList", { listName: this.$.name.value });
+
+				}
+
+			},
+
+			bindings: {
+				".lists li@??selected": function(model){
+					return ( this._model == model.activeList ? true : false );
+				}
 			}
 
-		});
-
-		Handlebars.registerHelper('isactive', function(name, options) {
-			if(options.data.root.state.activeList == name)
-				return options.fn();
-			else
-				return "";
 		});
 
 	</script>

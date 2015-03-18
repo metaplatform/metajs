@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Content providers - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Content providers</h1>
+			<p class="label">Various reactive model implementations.</p>
+		</header>
+
+		<section id="main">
+
+			<!-- CODE -->
+			<div id="code">
+				<h2>Observing provider</h2>
+				<pre id="source-observing" class="brush: js"></pre>
+			</div>
+
+			<div id="example">
+
+				<!-- OBSERVING PROVIDER -->
+				<h2>Observing provider</h2>
+				<section class="description">
+					<p>Providers calls changed callback everytime provider's object changes.</p>
+				</section>
+				<div id="example-observing" class="case">
+					<p>
+						<button class="inc">Increment</button>
+						<button class="push">Push</button>
+						<button class="pull">Pull</button>
+					</p>
+					<p>
+						Value: <span class="myValue">?</span>
+					</p>
+					<ul class="result-list items">
+						<li class="text"></li>
+					</ul>
+				</div>
+
+				<!-- CASE 1 -->
+				<div id="script-observing">
+					<script type="text/javascript">
+
+						var observingProvider = new Meta.ObservingProvider({
+							myValue: 0,
+							items: []
+						});
+
+						//React on provider data change
+						observingProvider.on("changed", function(data){
+							
+							Meta.Template.render(document.querySelector("#example-observing"), {
+								model: data
+							});
+
+						});
+
+						//Change provider data on button click
+						document.querySelector("#example-observing button.inc").addEventListener("click", function(){
+							
+							observingProvider.myValue++;
+
+						});
+
+						document.querySelector("#example-observing button.push").addEventListener("click", function(){
+							
+							observingProvider.items.push({
+								text: "Hello world!"
+							});
+
+						});
+
+						document.querySelector("#example-observing button.pull").addEventListener("click", function(){
+							
+							observingProvider.items.pop();
+
+						});
+
+					</script>
+				</div>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</section>
+
+
+		<script type="text/javascript">
+
+			demoCode('script-observing', 'source-observing');
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		</script>
+
+	</body>
+</html>

@@ -19,8 +19,11 @@ MetaJS is in early stage of development, API may change.
 
 ## MetaJS components
 
+### Template
+Pure JavaScript DOM templating.
+
 ### View
-View is HTML template using [Handlebars](http://handlebarsjs.com/) as templating engine and supports data-binding and auto-render using model observer.
+View is wrapper for reusable MetaJS templates.
 
 ### Fragment
 Fragment is basic reusable UI block which is using Views and adds a view logic.  
@@ -44,12 +47,10 @@ Todo-list is available in **examples** directory or [Todo-list on MetaPlatform's
 ## TO-DO
 - Meta-services API client
 - Messaging system (subscribe / publish pattern)
-- Content providers
+- Content providers (for API types)
 - Activity / Fragment modal dialogs
 
 ## License
 MetaJS is licensed under MIT license - see [LICENSE.md](./LICENSE.md)
-
-Handlebars library included in this project is licensed under MIT license. See [handlebarsjs.com](http://handlebarsjs.com/).
 
 Copyright (c) Jiri Hybek, jiri.hybek@cryonix.cz

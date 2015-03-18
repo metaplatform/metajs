@@ -128,6 +128,10 @@ header p.label {
 	margin-bottom: 3px;
 }
 
+#example .result-list li.highlight {
+	border-left-color: #1976D2;
+}
+
 #example .key {
 	display: inline-block;
 	width: 120px;

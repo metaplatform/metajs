@@ -23,9 +23,15 @@
 				background: #f3f3f3;
 			}
 
-			li[complete="true"]{
+			li[complete]{
 				text-decoration: line-through;
 				color: #999999;
+			}
+
+			li .remove {
+				display: inline-block;
+				float: right;
+				color: #ff0000;
 			}
 
 			.empty {
@@ -35,10 +41,12 @@
 
 		</style>
 
-		<ul>
-			{{#each todos}}
-			<li index="{{@key}}" complete="{{complete}}"><strong>{{task}}</strong> <em>{{formatDate date}}</em></li>
-			{{/each}}
+		<ul class="items">
+			<li>
+				<span class="remove">X</span>
+				<strong class="task"></strong>
+				<em class="date"></em>
+			</li>
 		</ul>
 
 	</template>
@@ -53,32 +61,47 @@
 
 			view: 'com.example.itemList',
 
-			onCreate: function(self){
+			model: {
+				items: []
+			},
 
-				//Define model properties
-				self.model.todos = [];
+			events: {
 
-				//Mark complete / incomplete
-				self.view.on("click", "li", function(ev){
+				"click .items li": function(ev){
 
-					var record = this.model.todos[ ev.sender.getAttribute("index") ];
-					record.complete = !record.complete;
+					this.fragment.fireEvent("itemClick", {
+						item: ev.sender._model
+					})
 
-					//Model observer is not deep, so we must re-render manually
-					this.render();
+				},
 
-				});
+				"click .items li .remove": function(ev){
 
-				//Observe todos
-				self.observe(self.model.todos);
+					this.fragment.fireEvent("itemRemove", {
+						item: ev.sender.parentElement._model
+					});
+
+				}
+
+			},
+
+			map: {
+				"items.complete": "li@??complete"
+			},
+
+			filters: {
+				"items.date": function(date){
+					return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
+				}
+			},
+
+			setItems: function(items){
+
+				this.model.items = items;
+				this.render();
 
 			}
 
-		});
-
-		//Register handlebars date helper
-		Handlebars.registerHelper('formatDate', function(date) {
-			return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
 		});
 
 	</script>

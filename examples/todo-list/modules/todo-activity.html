@@ -12,6 +12,7 @@
 			:host {
 				display: block;
 				font-size: 14px;
+				padding: 20px;
 			}
 
 			ul {
@@ -71,23 +72,18 @@
 
 		</style>
 
-		{{#ifset todoList}}
-		<ul>
-			<li class="add">
+		<div id="list">
+			<p class="add">
 				<input type="text" id="todo-name" name="todo_name" placeholder="Add new to-do" />
-			</li>
-			{{#each @root.todoList}}
-			<li index="{{@key}}" class="{{#if completed}}completed{{/if}}">
-				<span class="remove">Remove</span>
-				<span class="name">{{task}}</span>
-			</li>
-			{{/each}}
-		</ul>
-		{{/ifset}}
+			</p>
 
-		{{#ifnotset todoList}}
-		<p class="no-list">Please select a to-do list.</p>
-		{{/ifnotset}}
+			<ul class="items">
+				<li index="{{@key}}" class="{{#if completed}}completed{{/if}}">
+					<span class="remove">Remove</span>
+					<span class="name">{{task}}</span>
+				</li>
+			</ul>
+		</div>
 
 	</template>
 
@@ -99,90 +95,22 @@
 
 			onCreate: function(self){
 
-				self.model.state = {
-					activeList: 0
-				};
-
-				self.model.todoList = null;
-
-				//Add item
-				self.view.on("keypress", "#todo-name", function(ev){
-
-					if(ev.which != 13) return;
-
-					var name = this.$["todo-name"].value;
-
-					if(name == "") return;
-
-					self.todoModel.addTodo(self.model.state.activeList, name);
-
-					this.render();
-
-				});
-
-				//Remove list
-				self.view.on("click", ".remove", function(ev){
-
-					ev.preventDefault();
-					ev.stopPropagation();
-
-					var index = ev.sender.parentElement.getAttribute("index");
-
-					self.todoModel.removeTodo(self.model.state.activeList, index);
-
-				});
-
-				//Mark complete / incomplete
-				self.view.on("click", "li[index]", function(ev){
-
-					var index = ev.sender.getAttribute("index");
-
-					self.todoModel.markTodo(self.model.state.activeList, index);
-
-					this.render();
-
-				})
+				this.model.list = null;
 
 			},
 
-			onReady: function(self){
+			setList: function(todoList){
 
-				self.todoModel = self.parentModel.todoModel;
-				self.model.state = self.parentModel.state;
+				this.model.list = todoList;
 
-				var updateList = function(){
+			},
 
-					if(self.model.state.activeList === null){
-						self.model.todoList = null;
-						return;
-					}
+			conditions: {
 
-					self.model.todoList = self.parentModel.todoModel.data[ self.model.state.activeList ].items;
-
-					self.observe(self.model.todoList);
-
-				};
-
-				Object.observe(self.model.state, updateList);
-				updateList();
-
+				"list": true
 
 			}
 
-		});
-
-		Handlebars.registerHelper('ifset', function(value, options) {
-			if(value)
-				return options.fn();
-			else
-				return "";
-		});
-
-		Handlebars.registerHelper('ifnotset', function(value, options) {
-			if(!value)
-				return options.fn();
-			else
-				return "";
 		});
 
 	</script>
