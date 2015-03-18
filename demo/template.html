@@ -60,6 +60,7 @@
 
 					<div id="idVar">-</div>
 					<p class="classVar">-</p>
+					<p class="concat">-</p>
 
 					<ul class="items result-list">
 						<li>
@@ -69,9 +70,7 @@
 						</li>
 					</ul>
 
-					<p class="random">Random state is > 5</p>
-
-					<p class="explicit">Explicit binding</p>
+					<p class="random">Random state <strong>?</strong> is > 0</p>
 
 					<div class="data">Data container</div>
 
@@ -81,7 +80,7 @@
 					<script type="text/javascript">
 
 						var model = {
-							idVar: "Content by element ID (1)",
+							idVar: "Content by > element ID (1)",
 							classVar: "Content by element class (1)",
 							items: [
 								{ key: "Key X", value: "Value X", completed: false },
@@ -110,13 +109,11 @@
 								key: "Key " + Math.round(Math.random() * 10),
 								value: "Value " + Math.round(Math.random() * 100),
 								completed: false,
-								hello: Math.round(Math.random()),
-								newItem: true
+								cond: Math.round(Math.random()),
+								newItem: true,
 							})
 
-							model.random = Math.round(Math.random() * 10);
-
-							console.log(model.items);
+							model.random = Math.floor(Math.random() * 3);
 
 						}
 
@@ -126,10 +123,38 @@
 				<div id="script-bind">
 					<script type="text/javascript">
 
+						var tpl = Meta.Template(document.getElementById('example-binding'), {
+							"#idVar": "idVar",
+							".classVar": $__fn(function(ctx){ return ctx.classVar.toUpperCase(); }),
+							".concat": $__string("#{idVar} + #{classVar}"),
+							".data": $__with("data", {
+								"@": [
+									"key",
+									$__prop("data"),
+									$__attr("my-attribute", function(ctx){ return ctx["@parent"].random; }),
+									$__attrIf("random", "@parent.random", true)
+								]
+							}),
+							".random": $__ifGt("random", 0, {
+								"strong": "random"
+							}),
+							".items li": $__repeat("items", {
+								".item-key": "key",
+								".value": "value",
+								"@": [
+									$__attrIf("new", "newItem", true)
+								],
+								".cond": $__if("cond", {})
+							})
+						});
+
 						function bind(){
 
 							randomizeModel();
 
+							tpl(model);
+
+							/*
 							Meta.Template.render( document.getElementById('example-binding'), {
 								
 								model: model,
@@ -177,6 +202,7 @@
 								}
 
 							});
+							*/
 
 						}
 

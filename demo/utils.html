@@ -25,6 +25,9 @@
 
 				<h2>Element hashmap</h2>
 				<pre id="source-hashmap" class="brush: js"></pre>
+
+				<h2>Object access by path</h2>
+				<pre id="source-traverse" class="brush: js"></pre>
 			</div>
 
 			<div id="example">
@@ -56,6 +59,15 @@
 
 				<div id="hashmap-result" class="case">
 					<ul class="result-list"></ul>
+				</div>
+
+				<h2>Object access by path</h2>
+				<section class="description">
+					<p>Get object property by path</p>
+				</section>
+
+				<div id="traverse-result" class="case">
+					<p><span class="path">sample.list.1.key</span> = <span class="value">?</span></p>
 				</div>
 
 				<!-- IMPORT EXAMPLE -->
@@ -142,6 +154,31 @@
 					</script>
 				</div>
 
+				<!-- TRAVERSE EXAMPLE -->
+				<div id="example-traverse">
+					<script type="text/javascript">
+
+						function exampleTraverse(){
+
+							var path   = document.querySelector("#traverse-result .path").innerHTML;
+							var result = document.querySelector("#traverse-result .value");
+
+							var data = {
+								sample: {
+									list: [
+										{ "key": "key 0" },
+										{ "key": "key 1" }
+									]
+								}
+							}
+
+							result.innerHTML = Meta.Utils.traverse(data, path.split("."));
+
+						}
+
+					</script>
+				</div>
+
 			</div>
 
 			<div class="clear"></div>
@@ -153,6 +190,7 @@
 			demoCode('example-import', 'source-import');
 			demoCode('example-batch', 'source-batch');
 			demoCode('example-hashmap', 'source-hashmap');
+			demoCode('example-traverse', 'source-traverse');
 
 			SyntaxHighlighter.defaults['html-script'] = true;
 		    SyntaxHighlighter.all();
@@ -160,6 +198,7 @@
 		    exampleImport();
 		    exampleBatch();
 		    exampleHashmap();
+		    exampleTraverse();
 
 		</script>
 
