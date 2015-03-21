@@ -134,13 +134,17 @@ function render(){
 
 ### Function reference
 
-```Meta.Template(target, definition)```
+```javascript
+Meta.Template(target, definition)
+```  
 Creates template instance on target element by definition.
 
-```instance(context)```
+```javascript
+instance(context)
+```  
 Processes template with specified `context` (data / model).
 
-**Key parameter**
+**Key parameter**  
 Parameter `key` in following reference specifies context value.
 
 Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
