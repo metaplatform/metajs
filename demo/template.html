@@ -16,6 +16,24 @@
 				background: #ffeeee;
 			}
 
+			.items.result-list li[completed]{
+				text-decoration: line-through;
+			}
+
+			#sample-data {
+				box-sizing: border-box;
+				width: 99%;
+				min-height: 200px;
+				padding: 12px;
+				font-size: 12px;
+				line-height: 18px;
+				margin-bottom: 10px;
+			}
+
+			#example-binding button {
+				padding: 10px;
+			}
+
 		</style>
 	</head>
 
@@ -47,7 +65,9 @@
 
 				<h2>Data binding</h2>
 				<section class="description">
-					<p>Binds variables by ID and classes, array, conditionals and events.</p>
+					<p>MetaJS templating engine is based on simple principle:<br />"selector": &lt;processing function&gt;</p>
+					<p>Purpose of each processing function is to modify elements specified by selector and optionally run another processing functions.</p>
+					<p>Default builders provides features like assigning variables to element's content, conditions, loops, or attribute assignments.</p>
 					<p>MetaJS templates handles model references so when item is added to an array, original DOM nodes persists even when elements order has changed.</p>
 					<p></p>
 				</section>
@@ -55,7 +75,7 @@
 				<div id="example-binding" class="case">
 
 					<p>
-						<button class="one">Bind</button>
+						<button class="one">Bind random values</button>
 					</p>
 
 					<div id="idVar">-</div>
@@ -64,9 +84,9 @@
 
 					<ul class="items result-list">
 						<li>
-							<span class="item-key">key</span>
+							<em class="date"></em> / 
+							<span class="key">key</span>
 							<span class="value">value</span>
-							<span class="cond">Conditional</span>
 						</li>
 					</ul>
 
@@ -83,8 +103,8 @@
 							idVar: "Content by > element ID (1)",
 							classVar: "Content by element class (1)",
 							items: [
-								{ key: "Key X", value: "Value X", completed: false },
-								{ key: "Key Y", value: "Value Y", completed: true }
+								{ key: "Key X", value: "Value X", completed: 0, date: new Date() },
+								{ key: "Key Y", value: "Value Y", completed: 0, date: new Date() }
 							],
 							random: 1,
 							data: { key: "value" }
@@ -108,8 +128,8 @@
 							model.items.push({
 								key: "Key " + Math.round(Math.random() * 10),
 								value: "Value " + Math.round(Math.random() * 100),
-								completed: false,
-								cond: Math.round(Math.random()),
+								completed: Math.round(Math.random()),
+								date: new Date(),
 								newItem: true,
 							})
 
@@ -139,71 +159,24 @@
 								"strong": "random"
 							}),
 							".items li": $__repeat("items", {
-								".item-key": "key",
+								".key": "key",
 								".value": "value",
 								"@": [
-									$__attrIf("new", "newItem", true)
+									$__attrIf("new", "newItem", true),
+									$__attrIf("completed", "completed", true)
 								],
-								".cond": $__if("cond", {})
+								".date": $__if("date", {
+									"@": $__filter("date", "date")
+								})
 							})
 						});
 
-						function bind(){
+						Meta.Template.registerFilter("date", function(value){
+							return value.getDate() + ". " + (value.getMonth() + 1) + ". " + value.getFullYear();
+						});
 
-							randomizeModel();
-
+						function render(){
 							tpl(model);
-
-							/*
-							Meta.Template.render( document.getElementById('example-binding'), {
-								
-								model: model,
-
-								map: {
-									"items.key": ".item-key",					//Bind model value as innerHTML to given selector
-									"items.completed": ".item-key@?completed",	//Bind model value as attribute to given selector only if attribute is positive
-									"items.newItem": "li@??new",				//Bind model empty attribute to given selector only if attribute is positive
-									"items._key": ".item-key@index",			//Bind model value as attribute to given selector
-									"items.cond": false,						//Don't bind value
-									"random": false,							//Don't bind value
-									"data": ".data$data"						//Bind model value as node property to given selector
-								},
-
-								filters: {
-									//Node value for given model is specified by filter function
-									"items.value": function(value){
-										return value.toUpperCase() + " (" + this.key + ")";
-									}
-								},
-
-								conditions: {
-									//Show node only if model value is positive
-									"items.cond": true,
-
-									//Show node only if function returns positive
-									"random": function(value){
-										return (value > 5 ? true : false);
-									}
-								},
-
-								events: {
-									"click .items li": function(ev){
-										ev.sender.classList.toggle("highlight");
-									},
-									"click .data": function(ev){
-										console.log("DATA", ev.sender.data);
-									}
-								},
-
-								bindings: {
-									".explicit": function(){
-										return Math.random();
-									}
-								}
-
-							});
-							*/
-
 						}
 
 					</script>
@@ -223,13 +196,16 @@
 			demoCode('script-bind', 'source-bind');
 
 			document.querySelector("#example-binding button.one").addEventListener("click", function(){
-				bind();
+				
+				randomizeModel();
+				render();
+
 			});
+
+			render();
 
 			SyntaxHighlighter.defaults['html-script'] = true;
 		    SyntaxHighlighter.all();
-
-		    //exampleBinding();
 
 		</script>
 
