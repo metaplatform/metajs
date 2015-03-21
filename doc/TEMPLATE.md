@@ -1,8 +1,8 @@
 # metaJS - DOM templates
 
-DOM templating engine uses simple `"selector": processingFunction()` pattern.
+DOM templating engine uses simple `"selector": processingFunction` pattern.
 
-Processing function has element as `this` context and receives `context` parameter where data and meta values are passed.
+Processing function has element as `this` and receives `context` parameter where data and meta values are passed.
 
 Processing function can also run another processing scope.
 
@@ -83,7 +83,7 @@ function render(){
 ## Function reference
 
 ```javascript
-Meta.Template(target, definition)
+var instance = Meta.Template(target, definition)
 ```  
 Creates template instance on target element by definition.
 
@@ -92,12 +92,12 @@ instance(context)
 ```  
 Processes template with specified `context` (data / model).
 
-**`key` parameter**  
+#### `key` parameter
 Parameter `key` in following reference specifies context value.
 
 Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
 
-**`definition` parameter**
+#### `definition` parameter
 Definition parameter in following reference defines another rules which will be processed on child nodes.
 
 ### Content
@@ -192,10 +192,10 @@ var tpl = Meta.Tempate(target, {
 });
 ```
 
-#### `window.$__ifNot(key, definition = {})`
+#### `$__ifNot(key, definition = {})`
 If context value is negative.
 
-#### `window.$__ifLt(key, value, definition = {})`
+#### `$__ifLt(key, value, definition = {})`
 If context value is lower then reference value.
 
 ```javascript
@@ -206,24 +206,24 @@ var tpl = Meta.Tempate(target, {
 });
 ```
 
-#### `window.$__ifLte(key, value, definition = {})`
+#### `$__ifLte(key, value, definition = {})`
 If context value is lower or equal to reference value.
 
-#### `window.$__ifGt(key, value, definition = {})`
+#### `$__ifGt(key, value, definition = {})`
 If context value is lower then reference value.
 
-#### `window.$__ifGte(key, value, definition = {})`
+#### `$__ifGte(key, value, definition = {})`
 If context value is lower or equal to reference value.
 
 ### Loops
-#### `window.$__repeat(key, definition = {})`
+#### `$__repeat(key, definition = {})`
 Repeats nodes specified by selector for each item in context value.
 
 Definition parameter defines another rules which will be processed on every repeated element.
 
 ```javascript
 var tpl = Meta.Tempate(target, {
-	".customer": $__repeat("customers", {
+	".customers li": $__repeat("customers", {
 		".first_name": "first_name",
 		".last_name": "last_name",
 	}),
@@ -231,7 +231,7 @@ var tpl = Meta.Tempate(target, {
 ```
 
 ### Scopes
-#### `window.$__with(key, defintion = {})`
+#### `$__with(key, defintion = {})`
 Processes rules defined by definition where `context` is set to specified current `context` value.
 
 ```javascript
