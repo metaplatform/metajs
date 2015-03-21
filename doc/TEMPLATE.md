@@ -92,73 +92,153 @@ instance(context)
 ```  
 Processes template with specified `context` (data / model).
 
-**Key parameter**  
+**`key` parameter**  
 Parameter `key` in following reference specifies context value.
 
 Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
 
+**`definition` parameter**
+Definition parameter in following reference defines another rules which will be processed on child nodes.
+
 ### Content
 
-#### `window.$__html(key)`
+#### `$__html(key)`
 Sets element innerHTML to raw context value
 
 ```javascript
 var tpl = Meta.Tempate(target, {
-	"p.first_name": window.$__html("first_name"),
+	"p.first_name": $__html("first_name"),
 });
 ```
 
-**`window.$__text(key)`**  
+#### `$__text(key)`
 Sets element innerHTML to sanitized context value
 
-**`window.$__string(string)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"p.first_name": $__text("first_name"),
+});
+```
+
+#### `$__string(string)`
 Sets element innerHTML to string defined by parameter. Parameter is string where `#{key}` is replaced by context value.
 
-**`window.$__fn(fn)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"p.full_name": $__html("#{first_name} #{last_name}"),
+});
+```
+
+#### `$__fn(fn)`
 Sets element innerHTML to value returned by specified function. Specified function accepts `context` as first parameter and `this` as current element.
 
-**`window.$__filter(name, key)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"p.date": $__fn(function(context){
+		return context.date.toString()
+	}),
+});
+```
+
+#### `$__filter(name, key)`
 Sets element innerHTML to context value filtered by global filter - see filters below.
 
-#### Attributes and properties
-**`window.$__attr(name, key)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"p.last_name": $__filter("uppercase", "last_name"),
+});
+```
+
+### Attributes and properties
+
+#### `$__attr(name, key)`
 Sets element attribute specified by `name` to context value.
 
-**`window.$__attrIf(name, key, single)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"#menu": $__attr("opened", "ui.menu.opened"),
+});
+```
+
+#### `$__attrIf(name, key, single)`
 Sets element attribute specified by `name` to context value only if value is positive. If `single` is set to true, attribute will be added without value.
 
-**`window.$__prop(name, key)`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	"#menu": $__attrIf("opened", "ui.menu.opened", true),
+});
+```
+
+#### `$__prop(name, key)`**  
 Sets element object property to context value.
 
-#### Conditions
-Adds or removes element if conditions is satisfied.
+```javascript
+var tpl = Meta.Tempate(target, {
+	"meta-fragment#todo-list": $__prop("model", "todos"),
+});
+```
 
-Definition parameter defines another rules which will be processed on child nodes when condition is satisfied.
+### Conditions
+Adds or removes element based on condition.
 
-**`window.$__if(key, definition = {})`**  
+#### `$__if(key, definition = {})`
 If context value is positive.
 
-**`window.$__ifNot(key, definition = {})`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	".supplier": $__if("supplier", {
+		".name": "name"
+	}),
+});
+```
+
+#### `window.$__ifNot(key, definition = {})`
 If context value is negative.
 
-**`window.$__ifLt(key, value, definition = {})`**  
+#### `window.$__ifLt(key, value, definition = {})`
 If context value is lower then reference value.
 
-**`window.$__ifLte(key, value, definition = {})`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	".items": $__ifLt("supplier", 0, {
+		".name": "name"
+	}),
+});
+```
+
+#### `window.$__ifLte(key, value, definition = {})`
 If context value is lower or equal to reference value.
 
-**`window.$__ifGt(key, value, definition = {})`**  
+#### `window.$__ifGt(key, value, definition = {})`
 If context value is lower then reference value.
 
-**`window.$__ifGte(key, value, definition = {})`**  
+#### `window.$__ifGte(key, value, definition = {})`
 If context value is lower or equal to reference value.
 
-#### Loops
-**`window.$__repeat(key, definition = {})`**  
+### Loops
+#### `window.$__repeat(key, definition = {})`
 Repeats nodes specified by selector for each item in context value.
 
 Definition parameter defines another rules which will be processed on every repeated element.
 
-#### Scopes
-**`window.$__with(key, defintion = {})`**  
+```javascript
+var tpl = Meta.Tempate(target, {
+	".customer": $__repeat("customers", {
+		".first_name": "first_name",
+		".last_name": "last_name",
+	}),
+});
+```
+
+### Scopes
+#### `window.$__with(key, defintion = {})`
 Processes rules defined by definition where `context` is set to specified current `context` value.
+
+```javascript
+var tpl = Meta.Tempate(target, {
+	".supplier": $__with("supplier", {
+		".first_name": "first_name",
+		".last_name": "last_name",
+	}),
+});
+```
