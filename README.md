@@ -134,10 +134,10 @@ function render(){
 
 ### Function reference
 
-`Meta.Template(target, definition)`
+```Meta.Template(target, definition)```
 Creates template instance on target element by definition.
 
-`instance(context)`
+```instance(context)```
 Processes template with specified `context` (data / model).
 
 **Key parameter**
@@ -146,19 +146,19 @@ Parameter `key` in following reference specifies context value.
 Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
 
 #### Content
-`window.$__html(key)`  
+```window.$__html(key)```  
 Sets element innerHTML to raw context value
 
-`window.$__text(key)`  
+```window.$__text(key)```  
 Sets element innerHTML to sanitized context value
 
-`window.$__string(string)`  
+```window.$__string(string)```  
 Sets element innerHTML to string defined by parameter. Parameter is string where `#{key}` is replaced by context value.
 
-`window.$__fn(fn)`  
+```window.$__fn(fn)```  
 Sets element innerHTML to value returned by specified function. Specified function accepts `context` as first parameter and `this` as current element.
 
-`window.$__filter(name, key)`  
+```window.$__filter(name, key)```  
 Sets element innerHTML to context value filtered by global filter - see filters below.
 
 #### Attributes and properties
