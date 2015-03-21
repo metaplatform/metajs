@@ -150,10 +150,10 @@ Parameter `key` in following reference specifies context value.
 Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
 
 #### Content
-```window.$__html(key)```  
+**`window.$__html(key)`**  
 Sets element innerHTML to raw context value
 
-```window.$__text(key)```  
+**`window.$__text(key)`**  
 Sets element innerHTML to sanitized context value
 
 ```window.$__string(string)```  
