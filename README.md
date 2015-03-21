@@ -156,23 +156,23 @@ Sets element innerHTML to raw context value
 **`window.$__text(key)`**  
 Sets element innerHTML to sanitized context value
 
-```window.$__string(string)```  
+**`window.$__string(string)`**  
 Sets element innerHTML to string defined by parameter. Parameter is string where `#{key}` is replaced by context value.
 
-```window.$__fn(fn)```  
+**`window.$__fn(fn)`**  
 Sets element innerHTML to value returned by specified function. Specified function accepts `context` as first parameter and `this` as current element.
 
-```window.$__filter(name, key)```  
+**`window.$__filter(name, key)`**  
 Sets element innerHTML to context value filtered by global filter - see filters below.
 
 #### Attributes and properties
-**window.$__attr(name, key)**  
+**`window.$__attr(name, key)`**  
 Sets element attribute specified by `name` to context value.
 
-**window.$__attrIf(name, key, single)**  
+**`window.$__attrIf(name, key, single)`**  
 Sets element attribute specified by `name` to context value only if value is positive. If `single` is set to true, attribute will be added without value.
 
-**window.$__prop(name, key)**  
+**`window.$__prop(name, key)`**  
 Sets element object property to context value.
 
 #### Conditions
@@ -180,32 +180,32 @@ Adds or removes element if conditions is satisfied.
 
 Definition parameter defines another rules which will be processed on child nodes when condition is satisfied.
 
-**window.$__if(key, definition = {})**  
+**`window.$__if(key, definition = {})`**  
 If context value is positive.
 
-**window.$__ifNot(key, definition = {})**  
+**`window.$__ifNot(key, definition = {})`**  
 If context value is negative.
 
-**window.$__ifLt(key, value, definition = {})**  
+**`window.$__ifLt(key, value, definition = {})`**  
 If context value is lower then reference value.
 
-**window.$__ifLte(key, value, definition = {})**  
+**`window.$__ifLte(key, value, definition = {})`**  
 If context value is lower or equal to reference value.
 
-**window.$__ifGt(key, value, definition = {})**  
+**`window.$__ifGt(key, value, definition = {})`**  
 If context value is lower then reference value.
 
-**window.$__ifGte(key, value, definition = {})**  
+**`window.$__ifGte(key, value, definition = {})`**  
 If context value is lower or equal to reference value.
 
 #### Loops
-**window.$__repeat(key, definition = {})**  
+**`window.$__repeat(key, definition = {})`**  
 Repeats nodes specified by selector for each item in context value.
 
 Definition parameter defines another rules which will be processed on every repeated element.
 
 #### Scopes
-**window.$__with(key, defintion = {})**  
+**`window.$__with(key, defintion = {})`**  
 Processes rules defined by definition where `context` is set to specified current `context` value.
 
 # Demo
