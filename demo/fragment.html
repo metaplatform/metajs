@@ -137,17 +137,21 @@
 							//Default view
 							view: 'com.example.myFragment',
 
-							onCreate: function(){
-
-								//Define model properties
-								this.model.todos = [];
-
+							//Define view data binding
+							binding: {
+								".todos li": $__repeat("todos", {
+									"@": 		[
+										$__attrIf("complete", "complete", true),
+										$__prop("_model")
+									],
+									".task": 	"task",
+									".date": 	$__fn(function(data){
+										return data.date.getDate() + ". " + (data.date.getMonth() + 1) + ". " + data.date.getFullYear();
+									})
+								})
 							},
 
-							map: {
-								"todos.complete": "li@??complete"
-							},
-
+							//Define view events
 							events: {
 
 								"click button": function(ev){
@@ -186,11 +190,13 @@
 
 							},
 
-							filters: {
-								"todos.date": function(date){
-									return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
-								}
-							}
+							//Constructor
+							onCreate: function(){
+
+								//Define model properties
+								this.model.todos = [];
+
+							},
 
 						});
 

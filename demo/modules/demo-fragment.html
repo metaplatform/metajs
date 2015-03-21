@@ -65,6 +65,19 @@
 				items: []
 			},
 
+			binding: {
+				".items li": $__repeat("items", {
+					"@": 		[
+						$__attrIf("complete", "complete", true),
+						$__prop("_model")
+					],
+					".task": 	"task",
+					".date": 	$__fn(function(data){
+						return data.date.getDate() + ". " + (data.date.getMonth() + 1) + ". " + data.date.getFullYear();
+					})
+				})
+			},
+
 			events: {
 
 				"click .items li": function(ev){
@@ -83,16 +96,6 @@
 
 				}
 
-			},
-
-			map: {
-				"items.complete": "li@??complete"
-			},
-
-			filters: {
-				"items.date": function(date){
-					return date.getDate() + ". " + (date.getMonth() + 1) + ". " + date.getFullYear();
-				}
 			},
 
 			setItems: function(items){

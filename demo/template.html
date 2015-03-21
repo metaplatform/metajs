@@ -145,13 +145,13 @@
 
 						var tpl = Meta.Template(document.getElementById('example-binding'), {
 							"#idVar": "idVar",
-							".classVar": $__fn(function(ctx){ return ctx.classVar.toUpperCase(); }),
+							".classVar": $__fn(function(data){ return data.classVar.toUpperCase(); }),
 							".concat": $__string("#{idVar} + #{classVar}"),
 							".data": $__with("data", {
 								"@": [
 									"key",
 									$__prop("data"),
-									$__attr("my-attribute", function(ctx){ return ctx["@parent"].random; }),
+									$__attr("my-attribute", function(dara, ctx){ return ctx["parent"].random; }),
 									$__attrIf("random", "@parent.random", true)
 								]
 							}),

@@ -50,12 +50,17 @@
 							items: []
 						});
 
+						var tpl = Meta.Template(document.querySelector("#example-observing"), {
+							".myValue": "myValue",
+							".items li": $__repeat("items", {
+								"@": "text"
+							})
+						})
+
 						//React on provider data change
 						observingProvider.on("changed", function(data){
 							
-							Meta.Template.render(document.querySelector("#example-observing"), {
-								model: data
-							});
+							tpl(data);
 
 						});
 

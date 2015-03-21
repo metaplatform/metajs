@@ -66,7 +66,10 @@
 
 							//Define DOM target & create view instance
 							var target = document.getElementById('dom-render');
-							var instance = view.instance(target);
+							
+							var instance = view.instance(target, {
+								".x": "x"
+							});
 
 							//Initialize model
 							instance.model.x = 0;
@@ -92,7 +95,10 @@
 						function case2(){
 
 							var target = document.getElementById('referenced-view');
-							var instance = Meta.views["com.example.myView"].instance(target);
+							
+							var instance = Meta.views["com.example.myView"].instance(target, {
+								".x": "x"
+							});
 
 							instance.model.x = 0;
 

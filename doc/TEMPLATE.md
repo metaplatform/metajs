@@ -46,13 +46,13 @@ var model = {
 
 var tpl = Meta.Template(document.getElementById('my-template'), {
     "#idVar": "idVar",
-    ".classVar": $__fn(function(ctx){ return ctx.classVar.toUpperCase(); }),
+    ".classVar": $__fn(function(data){ return data.classVar.toUpperCase(); }),
     ".concat": $__string("#{idVar} + #{classVar}"),
     ".data": $__with("data", {
         "@": [
             "key",
             $__prop("data"),
-            $__attr("my-attribute", function(ctx){ return ctx["@parent"].random; }),
+            $__attr("my-attribute", function(dara, ctx){ return ctx["parent"].random; }),
             $__attrIf("random", "@parent.random", true)
         ]
     }),
@@ -83,21 +83,33 @@ function render(){
 ## Function reference
 
 ```javascript
-var instance = Meta.Template(target, definition)
+var instance = Meta.Template(target, binding)
 ```  
-Creates template instance on target element by definition.
+Creates template instance on target element by binding.
 
 ```javascript
-instance(context)
+instance(data)
 ```  
-Processes template with specified `context` (data / model).
+Processes template with specified `data`.
+
+#### `context` object
+```javascript
+var context = {
+	data: {},
+	<meta>: <value>
+}
+```
 
 #### `key` parameter
 Parameter `key` in following reference specifies context value.
 
-Parameter can be string with dot notation (for example: `customer.addresses.0.street`) or function which returns value.
+Parameter can be:
+1. string with dot notation - for example: `customer.addresses.0.street`
+2. `function(data, context)` which returns data value
 
-#### `definition` parameter
+By default `data` property of context is accessed. Context properties are available using `@` key prefix.
+
+#### `binding` parameter
 Definition parameter in following reference defines another rules which will be processed on child nodes.
 
 ### Content
@@ -130,12 +142,12 @@ var tpl = Meta.Tempate(target, {
 ```
 
 #### `$__fn(fn)`
-Sets element innerHTML to value returned by specified function. Specified function accepts `context` as first parameter and `this` as current element.
+Sets element innerHTML to value returned by specified function. Specified function accepts `data` as first parameter, `context` as second and `this` as current element.
 
 ```javascript
 var tpl = Meta.Tempate(target, {
-	"p.date": $__fn(function(context){
-		return context.date.toString()
+	"p.date": $__fn(function(data, context){
+		return data.date.toString()
 	}),
 });
 ```
@@ -181,7 +193,7 @@ var tpl = Meta.Tempate(target, {
 ### Conditions
 Adds or removes element based on condition.
 
-#### `$__if(key, definition = {})`
+#### `$__if(key, binding = {})`
 If context value is positive.
 
 ```javascript
@@ -192,10 +204,10 @@ var tpl = Meta.Tempate(target, {
 });
 ```
 
-#### `$__ifNot(key, definition = {})`
+#### `$__ifNot(key, binding = {})`
 If context value is negative.
 
-#### `$__ifLt(key, value, definition = {})`
+#### `$__ifLt(key, value, binding = {})`
 If context value is lower then reference value.
 
 ```javascript
@@ -206,17 +218,17 @@ var tpl = Meta.Tempate(target, {
 });
 ```
 
-#### `$__ifLte(key, value, definition = {})`
+#### `$__ifLte(key, value, binding = {})`
 If context value is lower or equal to reference value.
 
-#### `$__ifGt(key, value, definition = {})`
+#### `$__ifGt(key, value, binding = {})`
 If context value is lower then reference value.
 
-#### `$__ifGte(key, value, definition = {})`
+#### `$__ifGte(key, value, binding = {})`
 If context value is lower or equal to reference value.
 
 ### Loops
-#### `$__repeat(key, definition = {})`
+#### `$__repeat(key, binding = {})`
 Repeats nodes specified by selector for each item in context value.
 
 Definition parameter defines another rules which will be processed on every repeated element.
@@ -232,7 +244,7 @@ var tpl = Meta.Tempate(target, {
 
 ### Scopes
 #### `$__with(key, defintion = {})`
-Processes rules defined by definition where `context` is set to specified current `context` value.
+Processes rules defined by binding where `context` is set to specified current `context` value.
 
 ```javascript
 var tpl = Meta.Tempate(target, {
@@ -240,5 +252,17 @@ var tpl = Meta.Tempate(target, {
 		".first_name": "first_name",
 		".last_name": "last_name",
 	}),
+});
+```
+
+### Custom filters
+```javascript
+Meta.Template.registerFilter("<name>", <function>);
+```
+Registers global custom filter function.
+
+```javascript
+Meta.Template.registerFilter("date", function(value){
+	return value.getDate() + ". " + (value.getMonth() + 1) + ". " + value.getFullYear();
 });
 ```
