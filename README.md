@@ -63,7 +63,7 @@ Processing function can also run another processing scope.
 ### Usage example
 
 **HTML template**
-```
+```html
 <div id="my-template">
 	<div id="idVar">-</div>
 	<p class="classVar">-</p>
@@ -84,7 +84,7 @@ Processing function can also run another processing scope.
 ```
 
 **JS template definition**
-```
+```javascript
 var model = {
     idVar: "Content by > element ID (1)",
     classVar: "Content by element class (1)",
@@ -184,13 +184,13 @@ If context value is lower then reference value.
 If context value is lower or equal to reference value.
 
 #### Loops
-**window.$__repeat(key, definition = {})**
+**window.$__repeat(key, definition = {})**  
 Repeats node specified by selector for each item in context value.
 
 Definition parameter defines another rules which will be processed on every repeated element.
 
 #### Scopes
-**window.$__with(key, defintion = {})**
+**window.$__with(key, defintion = {})**  
 Processes rules defined by definition where `context` is set to specified current `context` value.
 
 # Demo
