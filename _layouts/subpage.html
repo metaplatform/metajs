@@ -1,0 +1,66 @@
+---
+layout: default
+---
+		{% if page.heading && page.description %}
+		<header id="intro" class="compact">
+			<div class="wrap">
+				<h1 class="title">{{ page.heading }}</h1>
+				<p class="description">{{ page.description }}</p>
+			</div>
+		</header>
+		{% elsif page.parent %}
+			{% for item in site.pages %}
+				{% if item.id == page.parent %}
+		<header id="intro" class="compact">
+			<div class="wrap">
+				<p class="title">{{ item.heading }}</p>
+				<p class="description">{{ item.description }}</p>
+			</div>
+		</header>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+
+
+		<div id="main" class="wrap">
+
+			<div class="sidebar">
+				<aside class="subnav">
+
+					{% if page.parent != null %}
+					{% for item in site.pages %}
+						{% if item.title and item.id == page.parent %}
+					<p class="title"><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></p>
+						{% endif %}
+					{% endfor %}
+					{% elsif page.id != null %}
+					<p class="title"><a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a></p>
+					{% endif %}
+
+					<nav>
+						<ul>
+						{% assign nav = site.pages | sort:"order"  %}
+						{% for item in nav %}
+							{% if item.title and item.parent != null and item.parent == page.parent %}
+							<li{% if page.url == item.url %} class="current"{% endif %}><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></li>
+							{% elsif item.title and item.parent != null and item.parent == page.id %}
+							<li{% if page.url == item.url %} class="current"{% endif %}><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></li>
+							{% endif %}
+						{% endfor %}
+						</ul>
+					</nav>
+
+				</aside>
+			</div>
+
+			<div class="content">
+
+				<article class="page rtc">
+					{{ content }}
+				</article>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</div>

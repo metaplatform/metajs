@@ -1,0 +1,20 @@
+---
+layout: default
+---
+		{% if page.heading && page.description %}
+		<header id="intro">
+			<div class="wrap">
+				<h1 class="title">{{ page.heading }}</h1>
+				<p class="description">{{ page.description }}</p>
+			</div>
+		</header>
+		{% endif %}
+
+
+		<div id="main" class="wrap">
+
+			<article class="page rtc">
+				{{ content }}
+			</article>
+
+		</div>

@@ -1,0 +1,17 @@
+# Site settings
+title: MetaJS
+email: info@meta-platform.com
+description: "MetaJS is pack of libraries which provides UI building blocks using web-components and HTML5 features."
+baseurl: "/metajs" # the subpath of your site, e.g. /blog/
+url: "http://metaplatform.github.io/" # the base hostname & protocol for your site
+author: "meta-platform.com"
+robots: "all, follow"
+
+# Link settings
+github_username: "metaplatform"
+github_repository: "metajs"
+metaplatform_url: "http://code.meta-platform.com/"
+contact_email: "info&#64;meta-platform.com"
+
+# Build settings
+markdown: redcarpet

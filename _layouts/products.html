@@ -1,0 +1,46 @@
+---
+layout: default
+---
+		{% if page.heading && page.description %}
+		<header id="intro"{% if page.header_compact %} class="compact"{% endif %}>
+			<div class="wrap">
+				<h1 class="title">{{ page.heading }}</h1>
+				<p class="description">{{ page.description }}</p>
+			</div>
+		</header>
+		{% endif %}
+
+
+		<div id="main">
+
+			<article class="products">
+				<div class="wrap">
+
+					<ul>
+
+					{% assign nav = site.pages | sort:"order"  %}
+					{% for item in nav %}
+						{% if item.title and item.class != null and item.class == page.products_class %}
+						<li>
+							<a href="{{ item.url | prepend: site.baseurl }}">
+								<span class="icon">{% include {{ item.icon | prepend: 'icons/' | append: '.svg' }} %}</span>
+								<span class="label">{{ item.title }}</span>
+							</a>
+						</li>
+						{% endif %}
+					{% endfor %}
+
+					</ul>
+
+					<div class="clear"></div>
+
+				</div>
+			</article>
+
+			<article class="rtc wrap">
+				{{content}}
+			</div>
+
+			</article>
+
+		</div>
