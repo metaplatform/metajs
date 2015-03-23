@@ -27,7 +27,7 @@ layout: default
 			<div class="sidebar">
 				<aside class="subnav">
 
-					{% if page.parent != null %}
+					{% if page.parent != null and page.top != true %}
 					{% for item in site.pages %}
 						{% if item.title and item.id == page.parent %}
 					<p class="title"><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></p>
@@ -41,7 +41,7 @@ layout: default
 						<ul>
 						{% assign nav = site.pages | sort:"order"  %}
 						{% for item in nav %}
-							{% if item.title and item.parent != null and item.parent == page.parent %}
+							{% if item.title and item.parent != null and item.parent == page.parent and page.top != true %}
 							<li{% if page.url == item.url %} class="current"{% endif %}><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></li>
 							{% elsif item.title and item.parent != null and item.parent == page.id %}
 							<li{% if page.url == item.url %} class="current"{% endif %}><a href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a></li>
