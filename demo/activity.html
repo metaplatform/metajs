@@ -33,11 +33,19 @@
 				<h2>To-do list</h2>
 				<section class="description">
 					<p>Sample to-do list. Click on an item to mark it as complete.</p>
-					<p>This example uses <strong>itemList</strong> fragment which is imported from file <strong>demo-fragment.html</strong>.</p>
+					<p>This example uses <strong>demo-activity</strong> and <strong>demo-fragment</strong> modules dynamically imported from <strong>modules</strong> directory.</p>
+					<p>Example also demonstrates activity pausing and resuming. When activity is paused then all child fragments are also paused and all view event bindings are removed.</p>
 				</section>
 
 				<div id="activity-code" class="case">
-					<!-- SHOW<meta-activity name="com.example.todoActivity"></meta-activity>SHOW -->
+					<!-- SHOW<meta-activity name="com.example.todoActivity" auto></meta-activity>SHOW -->
+				</div>
+
+				<div id="activity-control">
+					<p>
+						<button id="activity-pause">Pause</button>
+						<button id="activity-resume">Resume</button>
+					</p>
 				</div>
 
 				<div id="activity-view">
@@ -73,10 +81,10 @@
 
 						<p>
 							<input type="text" id="task" placeholder="To-do" />
-							<button>Add to-do</button>
+							<button class="add">Add to-do</button>
 						</p>
 
-						<meta-fragment name="com.example.itemList" id="list"></meta-fragment>
+						<meta-activity name="com.example.itemList" id="list"></meta-activity>
 
 					</template>
 				</div>
@@ -86,29 +94,31 @@
 
 						Meta.Activity('com.example.todoActivity', {
 
-							import: ['demo-fragment'],
+							import: ['demo-activity'],
 
 							view: 'com.example.todoActivity',
 
 							onCreate: function(self){
 
-								var provider = new Meta.ObservingProvider({
+								self.provider = new Meta.ObservingProvider({
 									todos: []
 								});
 
-								this.model.todos = provider.todos;
+								this.model.todos = self.provider.todos;
 
-								provider.on("changed", function(data){
+							},
 
-									self.view.$.list.setItems(data.todos);
+							onResume: function(self){
 
+								self.provider.on("changed", function(data){
+									self.$.list.setItems(data.todos);
 								})
 
 							},
 
 							events: {
 
-								"click button": function(ev){
+								"click button.add": function(ev){
 
 									if(this.$.task.value == "") return;
 
@@ -123,7 +133,7 @@
 								},
 
 								"itemClick #list": function(ev){
-									
+
 									ev.item.complete = !ev.item.complete;
 
 								},
@@ -147,7 +157,19 @@
 				<script type="text/javascript">
 
 					function init(){
-						document.getElementById("activity-code").innerHTML = '<meta-activity name="com.example.todoActivity"></meta-activity>';
+
+						document.getElementById("activity-code").innerHTML = '<meta-activity name="com.example.todoActivity" auto></meta-activity>';
+
+						var activity = document.getElementById("activity-code").querySelector("meta-activity");
+
+						document.getElementById('activity-pause').addEventListener("click", function(){
+							activity.pause();
+						});
+
+						document.getElementById('activity-resume').addEventListener("click", function(){
+							activity.resume();
+						});
+
 					}
 
 				</script>

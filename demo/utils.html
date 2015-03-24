@@ -28,6 +28,12 @@
 
 				<h2>Object access by path</h2>
 				<pre id="source-traverse" class="brush: js"></pre>
+
+				<h2>Sanitized HTML content</h2>
+				<pre id="source-sanitize" class="brush: js"></pre>
+
+				<h2>Date formatting</h2>
+				<pre id="source-formatdate" class="brush: js"></pre>
 			</div>
 
 			<div id="example">
@@ -68,6 +74,24 @@
 
 				<div id="traverse-result" class="case">
 					<p><span class="path">sample.list.1.key</span> = <span class="value">?</span></p>
+				</div>
+
+				<h2>Sanitize HTML</h2>
+				<section class="description">
+					<p>Rewrite "&lt;" and "&gt;" to entities.</p>
+				</section>
+
+				<div id="sanitize-result" class="case">
+					<p></p>
+				</div>
+
+				<h2>Date formatting</h2>
+				<section class="description">
+					<p>Provides date formatting function as in PHP.</p>
+				</section>
+
+				<div id="formatdate-result" class="case">
+					<p></p>
 				</div>
 
 				<!-- IMPORT EXAMPLE -->
@@ -179,6 +203,37 @@
 					</script>
 				</div>
 
+				<!-- SANITIZE EXAMPLE -->
+				<div id="example-sanitize">
+					<script type="text/javascript">
+
+						function exampleSanitize(){
+
+							var input  = 'This is <strong>sample</strong> HTML'
+							var result = document.querySelector("#sanitize-result p");
+
+							result.innerHTML = Meta.Utils.sanitizeHtml(input);
+
+						}
+
+					</script>
+				</div>
+
+				<!-- DATE FORMAT EXAMPLE -->
+				<div id="example-formatdate">
+					<script type="text/javascript">
+
+						function exampleFormatDate(){
+
+							var result = document.querySelector("#formatdate-result p");
+
+							result.innerHTML = Meta.Utils.formatDate("d. m. Y H:i:s", new Date());
+
+						}
+
+					</script>
+				</div>
+
 			</div>
 
 			<div class="clear"></div>
@@ -191,6 +246,8 @@
 			demoCode('example-batch', 'source-batch');
 			demoCode('example-hashmap', 'source-hashmap');
 			demoCode('example-traverse', 'source-traverse');
+			demoCode('example-sanitize', 'source-sanitize');
+			demoCode('example-formatdate', 'source-formatdate');
 
 			SyntaxHighlighter.defaults['html-script'] = true;
 		    SyntaxHighlighter.all();
@@ -199,6 +256,8 @@
 		    exampleBatch();
 		    exampleHashmap();
 		    exampleTraverse();
+		    exampleSanitize();
+		    exampleFormatDate();
 
 		</script>
 

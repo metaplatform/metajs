@@ -1,53 +1,45 @@
 <html>
 
 	<!-- DEFINE FRAGMENT VIEW -->
-	<template is="meta-view" name="com.example.itemList">
+	<template is="meta-view" name="com.example.itemListRow">
 
 		<style>
 
-			ul {
-				list-style: none;
-				padding: 0px;
-				margin: 0px;
-				border-top: 1px solid #dddddd;
+			:host {
+				display: block;
 			}
-			
-			li {
+
+			:host {
 				cursor: pointer;
 				padding: 8px;
 				font-weight: 300;
 				border-bottom: 1px solid #dddddd;
 			}
 
-			li:hover {
+			:host(:hover) {
 				background: #f3f3f3;
 			}
 
-			li[complete]{
-				text-decoration: line-through;
+			:host([complete]) {
 				color: #999999;
 			}
 
-			li .remove {
+			:host([complete]) .task,
+			:host([complete]) .date {
+				text-decoration: line-through;
+			}
+
+			:host .remove {
 				display: inline-block;
 				float: right;
 				color: #ff0000;
 			}
 
-			.empty {
-				font-style: italic;
-				color: #aaaaaa;
-			}
-
 		</style>
 
-		<ul class="items">
-			<li>
-				<span class="remove">X</span>
-				<strong class="task"></strong>
-				<em class="date"></em>
-			</li>
-		</ul>
+		<span class="remove">X</span>
+		<strong class="task"></strong>
+		<em class="date"></em>
 
 	</template>
 
@@ -55,52 +47,54 @@
 	<script type="text/javascript">
 
 		/*
+		 * Register base (sample) fragment - test for extends
+		 */
+		Meta.Fragment('com.example.rowBase', {
+			view: 'com.example.itemListRow'
+		});
+
+		/*
 		 * Register fragment
 		 */
-		Meta.Fragment('com.example.itemList', {
+		Meta.Fragment('com.example.itemListRow', {
 
-			view: 'com.example.itemList',
+			extends: 'com.example.rowBase',
 
 			model: {
-				items: []
+				item: null
 			},
 
 			binding: {
-				".items li": $__repeat("items", {
-					"@": 		[
-						$__attrIf("complete", "complete", true),
-						$__prop("_model")
-					],
+				"@": $__with("item", {
+					"@": $__attrIf("complete", "complete", true),
 					".task": 	"task",
-					".date": 	$__fn(function(data){
-						return data.date.getDate() + ". " + (data.date.getMonth() + 1) + ". " + data.date.getFullYear();
-					})
+					".date": 	$__date("date", "d.m.Y")
 				})
 			},
 
 			events: {
 
-				"click .items li": function(ev){
+				"click": function(ev){
 
-					this.fragment.fireEvent("itemClick", {
-						item: ev.sender._model
+					this.fireEvent("itemClick", {
+						item: this.model
 					})
 
 				},
 
-				"click .items li .remove": function(ev){
+				"click .remove": function(ev){
 
-					this.fragment.fireEvent("itemRemove", {
-						item: ev.sender.parentElement._model
+					this.fireEvent("itemRemove", {
+						item: this.model
 					});
 
 				}
 
 			},
 
-			setItems: function(items){
-
-				this.model.items = items;
+			setItem: function(item){
+				
+				this.model.item = item;
 				this.render();
 
 			}

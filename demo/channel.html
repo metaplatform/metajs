@@ -1,0 +1,195 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Channel - MetaJS Demo</title>
+		
+		<link rel="import" href="bootstrap.html" />
+	</head>
+
+	<body>
+		<header>
+			<h1><a href="index.html">MetaJS Demo</a> / Channel</h1>
+			<p class="label">Implementation of publish / subscribe pattern.</p>
+		</header>
+
+		<section id="main">
+
+			<!-- CODE -->
+			<div id="code">
+				<h2>Local channel</h2>
+				<pre id="source-local" class="brush: js"></pre>
+
+				<h2>Named channel</h2>
+				<pre id="source-named" class="brush: js"></pre>
+			</div>
+
+			<div id="example">
+
+				<!-- INSTANCED CHANNEL -->
+				<h2>Local channel</h2>
+				<section class="description">
+					<p>Channel is created as local variable.</p>
+				</section>
+				<div id="example-local" class="case">
+					<p>
+						<textarea class="message">Msg 123</textarea>
+					</p>
+					<p>
+						<button class="publish">Publish</button>
+					</p>
+					<ul class="result-list items">
+						<li>
+							<span class="result-1 key"></span>
+							<button class="subscribe-1">Subscribe</button>
+							<button class="unsubscribe-1">Unsubscribe</button>
+						</li>
+						<li>
+							<span class="result-2 key"></span>
+							<button class="subscribe-2">Subscribe</button>
+							<button class="unsubscribe-2">Unsubscribe</button>
+						</li>
+						<li>
+							<span class="result-3 key"></span>
+							<button class="subscribe-3">Subscribe</button>
+							<button class="unsubscribe-3">Unsubscribe</button>
+						</li>
+					</ul>
+				</div>
+
+				<!-- NAMED CHANNEL -->
+				<h2>Named channel</h2>
+				<section class="description">
+					<p>Channel is created as local variable and added to global registry.</p>
+				</section>
+				<div id="example-named" class="case">
+					<p>
+						<textarea class="message">Msg 123</textarea>
+					</p>
+					<p>
+						<button class="publish">Publish</button>
+					</p>
+					<ul class="result-list items">
+						<li>
+							<span class="result-1 key"></span>
+							<button class="subscribe-1">Subscribe</button>
+							<button class="unsubscribe-1">Unsubscribe</button>
+						</li>
+						<li>
+							<span class="result-2 key"></span>
+							<button class="subscribe-2">Subscribe</button>
+							<button class="unsubscribe-2">Unsubscribe</button>
+						</li>
+						<li>
+							<span class="result-3 key"></span>
+							<button class="subscribe-3">Subscribe</button>
+							<button class="unsubscribe-3">Unsubscribe</button>
+						</li>
+					</ul>
+				</div>
+
+				<!-- CASE 1 -->
+				<div id="script-local">
+					<script type="text/javascript">
+
+						function case1(){
+
+							var localChannel = new Meta.Channel();
+
+							/* BIND DOM EVENTS */
+							document.querySelector("#example-local button.publish").addEventListener("click", function(){
+
+								var msg = document.querySelector("#example-local .message").value;
+								localChannel.publish(msg);
+
+							});
+
+							var createSubscriber = function(i){
+
+								var subscriber = function(message){
+									document.querySelector("#example-local .result-" + i).innerHTML = message;
+								}
+
+								document.querySelector("#example-local button.subscribe-" + i).addEventListener("click", function(ev){
+									localChannel.subscribe(subscriber);
+									ev.target.parentElement.classList.add('highlight');
+								});
+
+								document.querySelector("#example-local button.unsubscribe-" + i).addEventListener("click", function(ev){
+									localChannel.unsubscribe(subscriber);
+									ev.target.parentElement.classList.remove('highlight');
+								});
+
+							}
+
+							for(var i = 1; i <= 3; i++)
+								createSubscriber(i);
+
+						}
+
+					</script>
+				</div>
+
+				<!-- CASE 2 -->
+				<div id="script-named">
+					<script type="text/javascript">
+
+						function case2(){
+
+							new Meta.Channel("named-channel");
+
+							/* BIND DOM EVENTS */
+							document.querySelector("#example-named button.publish").addEventListener("click", function(){
+
+								var msg = document.querySelector("#example-named .message").value;
+								Meta.channels["named-channel"].publish(msg);
+
+							});
+
+							var createSubscriber = function(i){
+
+								var subscriber = function(message){
+									document.querySelector("#example-named .result-" + i).innerHTML = message;
+								}
+
+								document.querySelector("#example-named button.subscribe-" + i).addEventListener("click", function(ev){
+									Meta.channels["named-channel"].subscribe(subscriber);
+									ev.target.parentElement.classList.add('highlight');
+								});
+
+								document.querySelector("#example-named button.unsubscribe-" + i).addEventListener("click", function(ev){
+									Meta.channels["named-channel"].unsubscribe(subscriber);
+									ev.target.parentElement.classList.remove('highlight');
+								});
+
+							}
+
+							for(var i = 1; i <= 3; i++)
+								createSubscriber(i);
+
+						}
+
+					</script>
+				</div>
+
+			</div>
+
+			<div class="clear"></div>
+
+		</section>
+
+
+		<script type="text/javascript">
+
+			demoCode('script-local', 'source-local');
+			demoCode('script-named', 'source-named');
+
+			SyntaxHighlighter.defaults['html-script'] = true;
+		    SyntaxHighlighter.all();
+
+		    case1();
+		    case2();
+
+		</script>
+
+	</body>
+</html>

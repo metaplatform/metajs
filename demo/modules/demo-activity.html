@@ -1,33 +1,78 @@
 <html>
 
 	<!-- DEFINE FRAGMENT VIEW -->
-	<template is="meta-view" name="demo-activity-view">
-		<p>Iam demo activity!</p>
-		<button id="btn">You've pushed me {{x}} times!</button>
+	<template is="meta-view" name="com.example.itemList">
+
+		<style>
+
+			ul {
+				list-style: none;
+				padding: 0px;
+				margin: 0px;
+				border-top: 1px solid #dddddd;
+			}
+			
+		</style>
+
+		<ul class="items">
+			<li>
+				<meta-fragment name="com.example.itemListRow"></meta-fragment>
+			</li>
+		</ul>
+
 	</template>
 
-	<!-- DEFINE FRAGMENT -->
+	<!-- DEFINE ACTIVITY -->
 	<script type="text/javascript">
 
 		/*
-		 * Register fragment
+		 * Register activity
 		 */
-		Meta.Fragment('demo-activity', {
+		Meta.Activity('com.example.itemList', {
 
-			view: 'demo-activity-view',
+			view: 'com.example.itemList',
 
-			constructor: function(){
+			import: [ "demo-fragment" ],
 
-				this.view.model.x = 0;
+			model: {
+				items: []
+			},
 
-				this.view.on("click", "button", function(){
-					console.log(this.view.$);
-					this.fireEvent("pushed");
-				}, this);
+			binding: {
+				".items li": $__repeat("items", {
+					"meta-fragment": [
+						function(ctx){
+							this.setItem(ctx.data);
+							this.resume();
+						}
+					]
+				})
+			},
 
-				this.countOne = function(){
-					this.view.model.x++
-				};
+			events: {
+
+				"itemClick .items li meta-fragment": function(ev){
+
+					this.fireEvent("itemClick", {
+						item: ev.item.item
+					})
+
+				},
+
+				"itemRemove .items li meta-fragment": function(ev){
+
+					this.fireEvent("itemRemove", {
+						item: ev.item.item
+					});
+
+				}
+
+			},
+
+			setItems: function(items){
+
+				this.model.items = items;
+				this.render();
 
 			}
 
