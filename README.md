@@ -65,7 +65,7 @@ Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.m
 # Build
 ```
 npm install
-gulp [all|template|view|fragment|activity|utilities|providers|channel|clean]
+gulp [all|template|view|fragment|activity|utils|providers|channel|clean]
 ```
 
 Minified versions of individual components are also available in **dist** directory.
