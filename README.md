@@ -33,6 +33,12 @@ Example usage: header, toolbar, search box, list view, etc...
 Activity extends fragment and provides top UI element for specific user-experience.  
 Example usage: customer list, customer detail, user account, etc...
 
+### Content providers
+Various reactive model implementations.
+
+### Channel
+Implementation of publish / subscribe pattern.
+
 ### Utilities
 Usefull utility functions which are used by other MetaJS components.
 
@@ -56,19 +62,17 @@ See **demo** directory for working examples and advanced usage.
 
 Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
-## Example apps
-Todo-list is available in **examples** directory or [Todo-list on MetaPlatform's repository](http://repo.meta-platform.com/metajs/examples/todo-list/)
-
 # Build
 ```
 npm install
-gulp [lib|clean]
+gulp [all|template|view|fragment|activity|utilities|providers|channel|clean]
 ```
+
+Minified versions of individual components are also available in **dist** directory.
 
 # TO-DO
 - Meta-services API client
-- Messaging system (subscribe / publish pattern)
-- Content providers (for API types)
+- Content providers (for MetaAPI types)
 - Activity / Fragment modal dialogs
 
 # License

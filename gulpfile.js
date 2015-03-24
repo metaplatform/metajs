@@ -14,8 +14,7 @@ var compress = function(name, src, output){
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
 		.pipe(insert.prepend(licenseHeader))
-		.pipe(gulp.dest('dist/'))
-		.pipe(notify({ message: 'Build complete: ' + name }));
+		.pipe(gulp.dest('dist/'));
 
 };
 
@@ -112,5 +111,14 @@ gulp.task('all', function() {
 });
 
 gulp.task('clean', function(cb) {
-    del(['dist/metajs.min.js'], cb)
+    del([
+    	'dist/template.min.js',
+    	'dist/view.min.js',
+    	'dist/fragment.min.js',
+    	'dist/activity.min.js',
+    	'dist/utils.min.js',
+    	'dist/providers.min.js',
+    	'dist/channel.min.js',
+    	'dist/metajs.min.js'
+    ], cb)
 });
