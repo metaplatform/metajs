@@ -29,7 +29,7 @@ products_class: components
 <div class="column-a1">
 	<h3>Project list</h3>
 	<p>Now lets design project list.</p>
-	<p>We want to display all projects from database. Here comes <strong>Data provider</strong> which provides data from server and updates <strong>Activity</strong>.</p>
+	<p>We want to display all projects from database. Here comes <strong>Content provider</strong> which provides data from server and updates <strong>Activity</strong>.</p>
 	<p>Our list view consists of univeral list fragment and we specify fragment for each row so we can control list design.</p>
 	<p>When user clicks on a project then content activity will be switched to project detail with tasks.</p>
 </div>
@@ -43,7 +43,7 @@ products_class: components
 <div class="column-a1">
 	<h3>Project detail</h3>
 	<p>Now lets design project detail.</p>
-	<p>We want to display project info and it's tasks. We use another <strong>Data provider</strong> for manipulate with tasks.</p>
+	<p>We want to display project info and it's tasks. We use another <strong>Content provider</strong> for manipulate with tasks.</p>
 	<p>Our detail consists of simple project info as HTML and univeral list with task row fragment.</p>
 	<p>Task row fragment can provide task maniuplation.</p>
 </div>
@@ -54,13 +54,13 @@ products_class: components
 
 <div class="clear"></div>
 
-<h2 class="teal clr-text">How data providers interacts?</h2>
+<h2 class="teal clr-text">How content provider interacts?</h2>
 <div class="column-a1">
 	<h4>Init</h4>
-	<p>Data provider loads data from server and notifies listeners (fragments or activities) about data.</p>
+	<p>Content provider loads data from storage (for example server with API) and notifies listeners (fragments or activities) about data.</p>
 
 	<h4>Action</h4>
-	<p>User makes an action and then Activity or Fragment calls provider method.</p>
+	<p>User makes an action and then Activity or Fragment call provider method.</p>
 
 	<h4>Update</h4>
 	<p>Provider takes an action and processes request (calls API for example) and then notifies listeners about changes so they can update views.</p>
@@ -76,7 +76,7 @@ products_class: components
 <div class="column-a1">
 	<p><strong>Activity</strong> defines specific application activity like project list or project detail.</p>
 	<p><strong>Fragment</strong> defines reusable UI component like toolbar or project row. Lately we can use task row to show last task in project list.</p>
-	<p><strong>Data provider</strong> provides data access and manipulation.</p>
+	<p><strong>Content provider</strong> provides data access and manipulation.</p>
 </div>
 
 <div class="column-a2">

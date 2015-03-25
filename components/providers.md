@@ -5,9 +5,9 @@ class: components
 permalink: /components/providers/
 order: 10
 
-title: "Data providers"
-heading: "Data providers"
-description: "Data providers creates interface for data modeling and data access."
+title: "Content providers"
+heading: "Content providers"
+description: "Content providers creates interface for data modeling and data access."
 icon: communication
 ---
 
