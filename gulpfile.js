@@ -27,6 +27,7 @@ gulp.task('default', function() {
 	gulp.start('providers');
 	gulp.start('channel');
 	gulp.start('all');
+	gulp.start('all-dev');
 });
 
 gulp.task('utils', function() {
@@ -118,6 +119,22 @@ gulp.task('all', function() {
 		.pipe(notify({ message: 'Build complete' }));
 });
 
+gulp.task('all-dev', function() {
+	return gulp.src([
+			'lib/utils.js',
+			'lib/template.js',
+			'lib/view.js',
+			'lib/fragment.js',
+			'lib/activity.js',
+			'lib/providers.js',
+			'lib/channel.js'
+		])
+		.pipe(concat('metajs.js'))
+		.pipe(rename({suffix: '.dev'}))
+		.pipe(gulp.dest('dist/'))
+		.pipe(notify({ message: 'Build complete' }));
+});
+
 gulp.task('clean', function(cb) {
     del([
     	'dist/template.min.js',
@@ -127,6 +144,7 @@ gulp.task('clean', function(cb) {
     	'dist/utils.min.js',
     	'dist/providers.min.js',
     	'dist/channel.min.js',
-    	'dist/metajs.min.js'
+    	'dist/metajs.min.js',
+    	'dist/metajs.dev.js'
     ], cb)
 });
