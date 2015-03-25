@@ -44,15 +44,15 @@ Implementation of publish / subscribe pattern.
 ### Utilities
 Usefull utility functions which are used by other MetaJS components.
 
-# Working demos
+## Working demos
 See **demo** directory for working examples and advanced usage.
 
 Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
-# Examples
+## Examples
 See **examples** directory for working applications.
 
-# Build
+## Build
 ```
 npm install
 gulp [all|all-dev|template|view|fragment|activity|utils|providers|channel|clean]
@@ -60,12 +60,12 @@ gulp [all|all-dev|template|view|fragment|activity|utils|providers|channel|clean]
 
 Minified versions of individual components are also available in **dist** directory.
 
-# TO-DO
+## TO-DO
 - Meta-services API client
 - Content providers (for MetaAPI types)
 - Activity / Fragment modal dialogs
 
-# License
+## License
 MetaJS is licensed under MIT license - see [LICENSE.md](./LICENSE.md)
 
 Copyright (c) Jiri Hybek, jiri.hybek@cryonix.cz
