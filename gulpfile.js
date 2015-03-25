@@ -101,7 +101,15 @@ gulp.task('channel', function() {
 });
 
 gulp.task('all', function() {
-	return gulp.src('lib/*.js')
+	return gulp.src([
+			'lib/utils.js',
+			'lib/template.js',
+			'lib/view.js',
+			'lib/fragment.js',
+			'lib/activity.js',
+			'lib/providers.js',
+			'lib/channel.js'
+		])
 		.pipe(concat('metajs.js'))
 		.pipe(rename({suffix: '.min'}))
 		.pipe(uglify())
