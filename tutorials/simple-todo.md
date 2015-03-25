@@ -211,7 +211,7 @@ onResume: function(self){
 
 onPause: function(self){
 
-	self.provider.off(self.providerChanged);
+	self.provider.off("changed", self.providerChanged);
 
 },
 ```
