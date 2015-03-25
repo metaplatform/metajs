@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>MetaJS Hello world</title>
+
+        <script type="text/javascript" src="../../dist/metajs.min.js"></script>
+    </head>
+
+    <body>
+
+    	<!--
+    		View
+    	-->
+		<template is="meta-view" name="com.example.hello">
+
+			<p>Hello world!</p>
+
+		</template>
+
+		<script type="text/javascript">
+
+			/*
+			 * Fragment
+			 */
+		    Meta.Fragment("com.example.hello", {
+
+		        view: "com.example.hello",
+
+		    });
+
+		</script>
+
+		<meta-fragment name="com.example.hello" auto></meta-fragment>
+
+    </body>
+</html>

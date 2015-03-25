@@ -215,11 +215,12 @@
 
 				onPause: function(self){
 
-				    self.provider.off(self.providerChanged);
+				    self.provider.off("changed", self.providerChanged);
 
 				}
 				
 		    });
+
 		</script>
 
 		<meta-activity name="com.example.todo" auto></meta-activity>

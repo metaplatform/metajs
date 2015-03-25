@@ -90,7 +90,7 @@
 						</li>
 					</ul>
 
-					<p class="random">Random state <strong>?</strong> is > 0</p>
+					<p class="random">Random state <strong>?</strong> is > random number</p>
 
 					<div class="data">Data container</div>
 
@@ -152,18 +152,19 @@
 									"key",
 									$__prop("data"),
 									$__attr("my-attribute", function(dara, ctx){ return ctx["parent"].random; }),
-									$__attrIf("random", "@parent.random", true)
+									$__attrIf("random", "@parent.data.random", true)
 								]
 							}),
-							".random": $__ifGt("random", 0, {
+							".random": $__ifGt("random", function(){ return Math.floor(Math.random() * 3); }, {
 								"strong": "random"
 							}),
 							".items li": $__repeat("items", {
-								".key": "key",
+								".key": $__filter("uppercase", "key"),
 								".value": "value",
 								"@": [
 									$__attrIf("new", "newItem", true),
-									$__attrIf("completed", "completed", true)
+									$__attrIf("completed", "completed", true),
+									$__classIf("highlight", "completed")
 								],
 								".date": $__if("date", {
 									"@": $__filter("date", "date")
