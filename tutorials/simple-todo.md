@@ -8,7 +8,13 @@ order: 2
 title: "Simple To-do"
 ---
 ## Simple one-activity To-do application
+In this tutorial we will create simple one-page / one-activity application for managing tasks.
 
+User will be able to add tasks, mark tasks as complete / incomplete and remove tasks.
+
+You can take look at [final result](http://repo.meta-platform.com/metajs/examples/simple-todo/).
+
+### Create project
 At first, create project directory and move to it.
 
 ```
