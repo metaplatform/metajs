@@ -12,7 +12,7 @@ github_username: "metaplatform"
 github_repository: "metajs"
 metaplatform_url: "http://code.meta-platform.com/"
 contact_email: "info&#64;meta-platform.com"
-google_analytics: xxx
+google_analytics: UA-61175243-2
 
 # Build settings
 markdown: redcarpet
