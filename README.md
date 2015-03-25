@@ -1,10 +1,12 @@
 # MetaPlatform's metaJS UI Framework
 MetaJS is pack of libraries which provides UI building blocks using web-components and HTML5 features.
 
-## Warning
-MetaJS is using experimental HTML5 WebComponent features which are not part of living standard and is not fully suported by web browsers.
+See [official project site](http://code.meta-platform.com/metajs/) for detailed info, tutorials and components reference.
 
-**MetaJS currently works only in Google Chrome.**
+## Warning
+MetaJS is using experimental HTML5 Web Component features which are not part of living standard and is not fully suported by web browsers.
+
+**MetaJS currently natively works only in Google Chrome.**
 
 **Required features:**
 - Custom elements
@@ -42,30 +44,18 @@ Implementation of publish / subscribe pattern.
 ### Utilities
 Usefull utility functions which are used by other MetaJS components.
 
-### Example
-```
-+-------------------------------------------------------+
-| Activity: Customer list                               |
-|                                                       |
-| +---------------------------------------------------+ |
-| | Fragment: Toolbar / View: Toolbar                 | |
-| +---------------------------------------------------+ |
-| |                                                   | |
-| | Fragment: ListView / View: ListView               | |
-| |                                                   | |
-| +---------------------------------------------------+ |
-+-------------------------------------------------------+
-```
-
-# Demo
+# Working demos
 See **demo** directory for working examples and advanced usage.
 
 Demos are also available on: [MetaJS on MetaPlatform's repository](http://repo.meta-platform.com/metajs/demo/)
 
+# Examples
+See **examples** directory for working applications.
+
 # Build
 ```
 npm install
-gulp [all|template|view|fragment|activity|utils|providers|channel|clean]
+gulp [all|all-dev|template|view|fragment|activity|utils|providers|channel|clean]
 ```
 
 Minified versions of individual components are also available in **dist** directory.
