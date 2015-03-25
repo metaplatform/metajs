@@ -13,6 +13,11 @@ icon: lightbulb
 
 ## MetaJS Tutorials
 
+### [Hello world]({{ site.baseurl }}/tutorials/hello-world/)
+Minimal setup - in this tutorial we will create simple fragment which uses view that prints Hello world.
+
+[Start tutorial]({{ site.baseurl }}/tutorials/hello-world/)
+
 ### [Simple To-do app]({{ site.baseurl }}/tutorials/simple-todo/)
 In this tutorial we will create simple one-page / one-activity application for managing tasks.
 

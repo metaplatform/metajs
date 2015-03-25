@@ -113,6 +113,7 @@ description: "Get started with MetaJS and build your first application."
 		</template>
 
 		<script type="text/javascript">
+
 		    Meta.Activity("com.example.todo", {
 
 		        view: "com.example.todo",
@@ -216,6 +217,7 @@ description: "Get started with MetaJS and build your first application."
 		        }
 
 		    });
+		    
 		</script>
 
 		<meta-activity name="com.example.todo" auto></meta-activity>

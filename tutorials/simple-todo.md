@@ -3,7 +3,7 @@ layout: subpage
 id: tutorial-simple-todo
 parent: tutorials
 permalink: /tutorials/simple-todo/
-order: 2
+order: 4
 
 title: "Simple To-do"
 ---
@@ -76,11 +76,13 @@ Now we will define our activity. Add following code after view definition.
 
 ```html
 <script type="text/javascript">
+
 	Meta.Activity("com.example.todo", {
 
 		view: "com.example.todo"
 
 	});
+
 </script>
 ```
 
@@ -91,6 +93,7 @@ Replace activity script by following code.
 
 ```html
 <script type="text/javascript">
+
 	Meta.Activity("com.example.todo", {
 
 		view: "com.example.todo",
@@ -144,6 +147,7 @@ Replace activity script by following code.
 		}
 
 	});
+	
 </script>
 ```
 

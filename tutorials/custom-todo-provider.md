@@ -3,7 +3,7 @@ layout: subpage
 id: tutorial-custom-todo-provider
 parent: tutorials
 permalink: /tutorials/custom-todo-provider/
-order: 4
+order: 6
 
 title: "Custom To-do provider"
 ---
