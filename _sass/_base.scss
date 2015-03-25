@@ -172,15 +172,15 @@ a:hover {
     background: #151515 url('../assets/header.jpg') no-repeat top center;
     background-attachment: fixed;
     color: #ffffff;
-    height: 230px;
-    text-align: center;
-    padding-top: 180px;
+    height: 180px;
+    text-align: left;
+    padding-top: 150px;
     margin-top: -70px;
 }
 
 #intro .title {
-    font-size: 70px;
-    font-weight: 300;
+    font-size: 60px;
+    font-weight: 100;
     color: #ffffff;
     margin-bottom: 16px;
 }
@@ -193,7 +193,7 @@ a:hover {
 #intro p.description {
     font-weight: 100;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 25px;
 }
 
 #intro.compact {
@@ -240,11 +240,12 @@ a:hover {
  */
 #main .sidebar aside {
     margin-bottom: 30px;
+    font-size: 16px;
 }
 
 #main .sidebar aside .title {
-    font-size: 2.25em;
-    line-height: 1.2;
+    font-size: 1.75em;
+    line-height: 1.225;
     padding-bottom: 0.3em;
     border-bottom: 1px solid #eee;
     font-weight: 100;
@@ -254,7 +255,7 @@ a:hover {
 #main .sidebar aside .title a {
     display: block;
     text-decoration: none;
-    color: #2962FF;
+    color: #000000;
     padding: 0px 10px;
 }
 
@@ -399,23 +400,31 @@ a:hover {
  * PRODUCTS TEMPLATE
  */
 .products {
-    padding-bottom: 50px;
+    padding-bottom: 25px;
     margin-bottom: 50px;
     border-bottom: 1px solid #dddddd;
 }
 
+.products.slim {
+    border-bottom: 0px none;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    padding-top: 30px;
+}
+
 .products ul {
     list-style: none;
-    margin: 0px -20px!important;
+    margin: 0px 0px!important;
     padding: 0px!important;
     text-align: center;
 }
 
 .products ul li {
     display: inline-block;
-    margin: 5px;
+    margin: 5px 5px 30px 5px;
     text-align: center;
-    width: 150px;
+    vertical-align: top;
+    width: 164px;
 }
 
 .products ul li a {
@@ -459,4 +468,18 @@ a:hover {
 
 .products ul li a:hover .label {
     color: #2962FF;
+}
+
+.products.slim ul li a .icon {
+    padding: 14px;
+    border-radius: 32px;
+}
+
+.products.slim ul li a svg {
+    width: 36px;
+    height: 36px;
+}
+
+.products.slim ul li a .label {
+    padding-top: 6px;
 }

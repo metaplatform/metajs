@@ -1,0 +1,92 @@
+---
+layout: products
+id: components
+class: homepage
+permalink: /components/
+order: 8
+
+title: "Components"
+heading: "Components"
+description: "Components reference and architecture overview."
+icon: components
+products_class: components
+---
+<h1 class="blue clr-text">Application architecture</h1>
+
+<div class="column-a1">
+	<p>Image that we have project management application which manages projects and it's tasks.</p>
+	<h3>How the UI should look like?</h3>
+	<p>We need navigation and dynamic content where individal screens will be placed.</p>
+	<p>Here comes the <strong>Activity</strong> component which defines our entire app. Then navigation is <strong>Fragment</strong> and content is another <strong>Activity</strong>.</p>
+</div>
+
+<div class="column-a2">
+	<img src="{{ site.baseurl }}/assets/app-arch-1.jpg" alt="Application UI 1" />
+</div>
+
+<div class="clear"></div>
+
+<div class="column-a1">
+	<h3>Project list</h3>
+	<p>Now lets design project list.</p>
+	<p>We want to display all projects from database. Here comes <strong>Data provider</strong> which provides data from server and updates <strong>Activity</strong>.</p>
+	<p>Our list view consists of univeral list fragment and we specify fragment for each row so we can control list design.</p>
+	<p>When user clicks on a project then content activity will be switched to project detail with tasks.</p>
+</div>
+
+<div class="column-a2">
+	<img src="{{ site.baseurl }}/assets/app-arch-2.jpg" alt="Application UI 2" />
+</div>
+
+<div class="clear"></div>
+
+<div class="column-a1">
+	<h3>Project detail</h3>
+	<p>Now lets design project detail.</p>
+	<p>We want to display project info and it's tasks. We use another <strong>Data provider</strong> for manipulate with tasks.</p>
+	<p>Our detail consists of simple project info as HTML and univeral list with task row fragment.</p>
+	<p>Task row fragment can provide task maniuplation.</p>
+</div>
+
+<div class="column-a2">
+	<img src="{{ site.baseurl }}/assets/app-arch-2.jpg" alt="Application UI 2" />
+</div>
+
+<div class="clear"></div>
+
+<h2 class="teal clr-text">How data providers interacts?</h2>
+<div class="column-a1">
+	<h4>Init</h4>
+	<p>Data provider loads data from server and notifies listeners (fragments or activities) about data.</p>
+
+	<h4>Action</h4>
+	<p>User makes an action and then Activity or Fragment calls provider method.</p>
+
+	<h4>Update</h4>
+	<p>Provider takes and action processes request (calls API for example) and notifies listeners about changes so they can update views.</p>
+</div>
+
+<div class="column-a2">
+	<img src="{{ site.baseurl }}/assets/dataprovider-diagram.png" alt="Data provider diagram" />
+</div>
+
+<div class="clear"></div>
+
+<h2>Summary</h2>
+<div class="column-a1">
+	<p><strong>Activity</strong> defines specific application activity like project list or project detail.</p>
+	<p><strong>Fragment</strong> defines reusable UI component like toolbar or project row. Lately we can use task row to show last task in project list.</p>
+	<p><strong>Data provider</strong> provides data access and manipulation.</p>
+</div>
+
+<div class="column-a2">
+	<p><strong>View</strong> defines reusable HTML template for each activity and fragment.</p>
+	<p><strong>DOM template</strong> is library which adds data-binding and view-logic to our views.</p>
+	<p><strong>Channels</strong> are implementation of publish / subscribe pattern.</p>
+</div>
+
+<div class="clear"></div>
+
+<div class="claim">
+	<p>See <a href="{{ site.baseurl }}/tutorial/">tutorial</a> for real app example.</p>
+</div>

@@ -2,10 +2,10 @@
 layout: subpage
 parent: components
 class: components
-permalink: /components/fragment/
+permalink: /components/fragment-activity/
 order: 6
 
-title: "Fragment"
+title: "Fragment & Activity"
 heading: "Fragment"
 description: "Fragment uses View and represents re-usable UI component."
 icon: fragment

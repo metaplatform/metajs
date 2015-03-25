@@ -14,27 +14,25 @@ layout: default
 		<div id="main">
 
 			<article class="products">
-				<div class="wrap">
 
-					<ul>
+				<ul>
 
-					{% assign nav = site.pages | sort:"order"  %}
-					{% for item in nav %}
-						{% if item.title and item.class != null and item.class == page.products_class %}
-						<li>
-							<a href="{{ item.url | prepend: site.baseurl }}">
-								<span class="icon">{% include {{ item.icon | prepend: 'icons/' | append: '.svg' }} %}</span>
-								<span class="label">{{ item.title }}</span>
-							</a>
-						</li>
-						{% endif %}
-					{% endfor %}
+				{% assign nav = site.pages | sort:"order"  %}
+				{% for item in nav %}
+					{% if item.title and item.class != null and item.class == page.products_class %}
+					<li>
+						<a href="{{ item.url | prepend: site.baseurl }}">
+							<span class="icon">{% include {{ item.icon | prepend: 'icons/' | append: '.svg' }} %}</span>
+							<span class="label">{{ item.title }}</span>
+						</a>
+					</li>
+					{% endif %}
+				{% endfor %}
 
-					</ul>
+				</ul>
 
-					<div class="clear"></div>
+				<div class="clear"></div>
 
-				</div>
 			</article>
 
 			<article class="rtc wrap">
