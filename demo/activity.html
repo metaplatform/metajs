@@ -108,11 +108,17 @@
 
 							},
 
+							onReady: function(self){
+
+								self.$.list.model.items = self.model.todos;
+
+							},
+
 							onResume: function(self){
 
 								self.provider.on("changed", function(data){
-									self.$.list.setItems(data.todos);
-								})
+									self.$.list.render();
+								});
 
 							},
 

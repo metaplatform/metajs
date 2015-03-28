@@ -42,7 +42,7 @@
 				".items li": $__repeat("items", {
 					"meta-fragment": [
 						function(ctx){
-							this.setItem(ctx.data);
+							this.model.item = ctx.data;
 							this.resume();
 						}
 					]
@@ -67,15 +67,8 @@
 
 				}
 
-			},
-
-			setItems: function(items){
-
-				this.model.items = items;
-				this.render();
-
 			}
-
+			
 		});
 
 	</script>
