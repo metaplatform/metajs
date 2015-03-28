@@ -33,7 +33,7 @@ localChannel.unsubscribe(subscriber);
 
 ### Global channel example
 ```javascript
-new Meta.Channel("global-channel");
+new Meta.Channel({ name: "global-channel" });
 
 //In one part of application
 var subscriber = Meta.channels["global-channel"].subscribe(function(message){
@@ -49,11 +49,17 @@ Meta.channels["global-channel"].publish({
 
 ## Channel object reference
 
-### Meta.Channel(name)
+### Meta.Channel(config)
 
 Channel constructor.
 
-If name is set then channel is added to `Meta.channels` object by specified `name`.
+#### config.name: string
+
+If config property **name** is set then channel is added to `Meta.channels` object by specified `name`.
+
+#### config.onPublish: function(message)  
+
+If **onPublish** property is set then every published message is passed to this function. Function should throw an error if has invalid format. Function must return message instance so it can modify it. This function is usefull when using global channels and message validation is needed.
 
 ### Channel.subscribe(handler)
 
