@@ -827,7 +827,7 @@ window.Meta.ViewPrototype.instance = function(target, binding){
 		/*
 		 * Redefine template
 		 */
-		configure: function(target, binding){
+		materialize: function(target, binding){
 
 			//Set target
 			instance.target = target;
@@ -846,6 +846,9 @@ window.Meta.ViewPrototype.instance = function(target, binding){
 
 			//Define template
 			instance.template = window.Meta.Template(target, binding);
+
+			//Update hashtable
+			instance.$ = window.Meta.Utils.idHashmap(instance.target);
 
 		},
 
@@ -945,7 +948,7 @@ window.Meta.ViewPrototype.instance = function(target, binding){
 
 			//Validate
 			if(!instance.template)
-				throw "Template is not configured."
+				throw "Template is not materialized."
 
 			//Render
 			instance.template(instance.model);
@@ -969,7 +972,7 @@ window.Meta.ViewPrototype.instance = function(target, binding){
 	instance.eventsContext = instance;
 
 	if(target && binding)
-		instance.configure(target, binding);
+		instance.materialize(target, binding);
 
 	return instance;
 
@@ -1033,7 +1036,7 @@ window.Meta.Fragment = function(name, config){
  -------------------------------------------------------------------------- */
 window.Meta.FragmentPrototype = Object.create(HTMLElement.prototype);
 
-window.Meta.FragmentPrototype._defaultMethods = [ "onCreate", "onResume", "onPause", "onRender" ]
+window.Meta.FragmentPrototype._defaultMethods = [ "onCreate", "onReady", "onResume", "onPause", "onRender" ]
 
 /*
  * Get config method - can be overriden
@@ -1045,9 +1048,79 @@ window.Meta.FragmentPrototype._getConfig = function(name){
 }
 
 /*
+ * Component init - handles setup and import
+ */
+window.Meta.FragmentPrototype.init = function(){
+
+	//Check state
+	if(this.name)
+		throw "Fragment '" + name + "' already initialized.";
+
+	//Assign name
+	this.name = this.getAttribute("name");
+	
+	//Assign state variables
+	this._created = false;
+	this._ready = false;
+	this._auto = ( this.hasAttribute("auto") ? true : false );
+	this._paused = true;
+	this._resumeStack = [];
+	this._readyStack = [];
+
+	//Get fragment config
+	this.config = this._getConfig(this.name);
+
+	if(!this.config)
+		throw "Fragment '" + this.name + "' not registered.";
+
+	//Import methods
+	for(k in this.config)
+		if(this.config[k] instanceof Function && window.Meta.FragmentPrototype._defaultMethods.indexOf(k) < 0)
+			this.bindMethod(this, k, this.config[k])
+
+	//Create shadow root?
+	if(this.config.shadowRoot)
+		this.fragmentRoot = this.createShadowRoot();
+	else
+		this.fragmentRoot = this;
+
+	//Hide fragment
+	this.style.visibility = 'hidden';
+	
+	//Handle imports
+	var self = this;
+
+	if(this.config.import){
+
+		window.Meta.Utils.importMany(this.config.import, function(){
+
+			self.create();
+
+		}, function(){
+			
+			throw "Imports for fragment '" + self.name + "' failed";
+
+		})
+
+	} else {
+
+		self.create();
+
+	}
+
+}
+
+/*
  * Component constructor - called when all imports are ready
  */
 window.Meta.FragmentPrototype.create = function(){
+
+	//Check state
+	if(this._created)
+		throw "Fragment '" + this.name + "' already created.";
+
+	//Save context
+	var self = this;
 
 	//Define model
 	if(this.config.model)
@@ -1065,9 +1138,36 @@ window.Meta.FragmentPrototype.create = function(){
 	//Fire create event
 	this.fireEvent("create");
 
-	//Resume?
-	if( (this.parentElement && this._auto) || this._callStack.length > 0 )
-		this.resume();
+	//Set view
+	this.setView(this.config.view);
+
+	//Wait for all child fragments been created
+	var checkChild = function(childFragment, next){
+		childFragment.whenReady(next);
+	};
+
+	var childFragments = this.fragmentRoot.querySelectorAll("meta-fragment, meta-activity");
+
+	window.Meta.Utils.batch(childFragments, checkChild, function(){
+
+		//Set state
+		self._ready = true;
+
+		//Call onReady handler
+		if(self.config.onReady)
+			self.config.onReady.call(self, self);
+
+		//Call ready stack
+		for(var i in self._readyStack)
+			if(self._readyStack[i]) self._readyStack[i].call(self);
+
+		self._readyStack = [];
+
+		//Resume?
+		if( (self.parentElement && self._auto) || self._resumeStack.length > 0 )
+			self.resume();
+
+	});
 
 }
 
@@ -1077,26 +1177,27 @@ window.Meta.FragmentPrototype.create = function(){
 window.Meta.FragmentPrototype.resume = function(cb){
 
 	//Validate state
-	if(!this._paused)
+	if(!this._paused){
+		
+		this.render();
 		if(cb) return cb(); else return;
+
+	}
 	
 	//Add to stack
-	this._callStack.push({ fn: cb || null, args: [], context: this });
+	this._resumeStack.push(cb);
 
 	//Check state
-	if(!this._created)
+	if(!this._ready)
 		return;
 
-	//Prepare view
-	if(this.config.view && !this.view)
-		this.setView(this.config.view);
+	//Save context
+	var self = this;
 
-	//Render view
+	//Async resume handler
 	this.render();
 
 	//Resume childs fragments
-	var self = this;
-
 	var resumeChild = function(childFragment, next){
 		childFragment.resume(next);
 	};
@@ -1112,10 +1213,13 @@ window.Meta.FragmentPrototype.resume = function(cb){
 		if(self.config.onResume)
 			self.config.onResume.call(self, self);
 
-		for(var i in self._callStack)
-			if(self._callStack[i].fn) self._callStack[i].fn.apply(self._callStack[i].context, self._callStack[i].args);
+		for(var i in self._resumeStack)
+			if(self._resumeStack[i]) self._resumeStack[i].call(self);
 
-		self._callStack = [];
+		self._resumeStack = [];
+
+		//Show fragment
+		self.style.visibility = 'visible';
 
 	});
 
@@ -1158,6 +1262,15 @@ window.Meta.FragmentPrototype.pause = function(cb){
 
 }
 
+window.Meta.FragmentPrototype.whenReady = function(cb){
+
+	if(this._ready)
+		return cb();
+	else
+		this._readyStack.push(cb);
+
+}
+
 /*
  * Bind method
  */
@@ -1166,7 +1279,7 @@ window.Meta.FragmentPrototype.bindMethod = function(self, name, fn){
 	self[k] = function(){
 
 			if(!self._created || self._paused)
-				return self._callStack.push({ fn: fn, args: arguments, context: self })
+				throw "Fragment '" + this.name + "' is not ready yet.";
 				
 			fn.apply(self, arguments);
 
@@ -1193,13 +1306,16 @@ window.Meta.FragmentPrototype.setView = function(view){
 	}
 
 	//Configure template
-	this.view.configure(this.fragmentRoot, this.config.binding || {});
+	this.view.materialize(this.fragmentRoot, this.config.binding || {});
 
 	//Assign view params
 	this.view.model = this.model;
 	this.view.events = this.config.events || {};
 	this.view.eventsContext = this;
 	this.view.fragment = this;
+
+	//Bind hashmap
+	this.$ = this.view.$;
 
 }
 
@@ -1209,11 +1325,12 @@ window.Meta.FragmentPrototype.setView = function(view){
 window.Meta.FragmentPrototype.render = function(){
 
 	//Render view
-	if(this.view)
+	if(this.view){
+		
 		this.view.render();
+		this.$ = this.view.$;
 
-	//Bind hashmap
-	this.$ = this.view.$;
+	}
 
 	//Call render functon
 	if(this.config.onRender)
@@ -1226,52 +1343,8 @@ window.Meta.FragmentPrototype.render = function(){
  */
 window.Meta.FragmentPrototype.createdCallback = function(){
 	
-	//Assign name
-	this.name = this.getAttribute("name");
-	
-	//Assign state variables
-	this._created = false;
-	this._auto = ( this.hasAttribute("auto") ? true : false );
-	this._paused = true;
-	this._callStack = [];
-
-	//Get fragment config
-	this.config = this._getConfig(this.name);
-
-	if(!this.config)
-		throw "Fragment '" + this.name + "' not registered.";
-
-	//Import methods
-	for(k in this.config)
-		if(this.config[k] instanceof Function && window.Meta.FragmentPrototype._defaultMethods.indexOf(k) < 0)
-			this.bindMethod(this, k, this.config[k])
-
-	//Create shadow root?
-	if(this.config.shadowRoot)
-		this.fragmentRoot = this.createShadowRoot();
-	else
-		this.fragmentRoot = this;
-	
-	//Handle imports
-	var self = this;
-
-	if(this.config.import){
-
-		window.Meta.Utils.importMany(this.config.import, function(){
-
-			self.create();
-
-		}, function(){
-			
-			throw "Imports for fragment '" + self.name + "' failed";
-
-		})
-
-	} else {
-
-		self.create();
-
-	}
+	if(this.hasAttribute("name"))
+		this.init();
 
 };
 
@@ -1292,6 +1365,20 @@ window.Meta.FragmentPrototype.dettachedCallback = function(){
 
 	if(this._created && this._auto)
 		this.pause();
+
+}
+
+/*
+ * DOM attribute changed
+ */
+window.Meta.FragmentPrototype.attributeChangedCallback = function(attrName, oldVal, newVal){
+
+	if(attrName == "name")
+		this.init();
+	else
+		this.fireEvent(attrName + "Changed", {
+			fragment: this
+		});
 
 }
 
