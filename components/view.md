@@ -148,11 +148,13 @@ Hashmap is available after first render.
 
 ### Methods
 
-#### instance.configure(targetElement, binding={})
+#### instance.materialize(targetElement, binding={})
 
 Re-creates view's template instance.
 
-Do NOT use when you don't know what are you doing.
+This function is called automatically if **targetElement** and **bindings** arguments are set in instance constructor.
+
+This function should be manually called only once and in case where we don't know target and binding when creating instance.
 
 #### instance.on(eventName, selector, handler)
 
@@ -161,3 +163,5 @@ Adds event handler for elements specified by `selector` to instance's `events` p
 #### instance.render()
 
 Renders template.
+
+Throws error if view has not been materialized yet.

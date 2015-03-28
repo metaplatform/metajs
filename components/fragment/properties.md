@@ -91,6 +91,12 @@ Function which will be called when fragment is created.
 
 See [Fragment lifecycle]({{ site.baseurl }}/components/fragment-activity/lifecycle/) for more details.
 
+### **onReady**: function(self)
+
+Function which will be called when fragment is ready.
+
+See [Fragment lifecycle]({{ site.baseurl }}/components/fragment-activity/lifecycle/) for more details.
+
 ### **onResume**: function(self)
 
 Function which will be called when fragment is resumed.

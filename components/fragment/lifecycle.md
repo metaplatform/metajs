@@ -10,7 +10,7 @@ title: "Fragment lifecycle"
 
 ## Fragment lifecycle
 
-Fragment's life is divded into `created`, `resumed` and `paused` states.
+Fragment's life is divded into `created`, `ready`, `resumed` and `paused` states.
 
 ### Created state
 Fragment state is set to `created` when:
@@ -21,12 +21,22 @@ Fragment state is set to `created` when:
 
 **In this state `view` property is not available yet.**
 
+Fragment element **visibility** css property is set to **hidden**.
+
+### Ready state
+Fragment state is set to `ready` when:
+
+- View has been materialized (but not rendered yet)
+- All child fragments has been created (but not ready and not resumed yet)
+
+In this state child fragment properties should be set - provider binding for example.
+
 ### Resumed state
 Fragment state is set to `resumed` when `fragmentElement.resume` method has been called.
 
 **Resume cycle:**
 
-1. If fragment is resumed at first time then fragment's view is initialized and rendered.
+1. If fragment is resumed at first time then fragment's css property **visibility** is set to **visible**.
 2. Resume all child fragments and wait until they all are resumed
 3. Call `onResume` handler - now `view` property is available
 4. Call `fragmentElement.resume` method's `callback`

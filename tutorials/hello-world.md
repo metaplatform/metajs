@@ -59,6 +59,10 @@ Now lets define our fragment view. Adds following HTML to body instead of dots.
 
 We just created simple view with template that contains one paragraph.
 
+View is defined by native **template** tag and extended to meta-view by settings **is** attribute to **meta-view**.
+
+Attribute **name** specifies global view name so we can reference it later in our fragment definition.
+
 ### Fragment definition
 Now we will define our fragment. Add following code after view definition.
 
@@ -74,6 +78,8 @@ Now we will define our fragment. Add following code after view definition.
 
 Code registers new fragment **com.example.hello** and we specified that fragment should use **com.example.hello** view as we defined previously.
 
+First argument of Meta.Fragment function specifies global fragment name so it can be created later.
+
 ### Create fragment
 Until now we didn't see anything because we just registered fragment but not created it.
 
@@ -83,7 +89,7 @@ So let's add following code at the end of our index before `</body>`.
 <meta-fragment name="com.example.hello" auto></meta-fragment>
 ```
 
-We simply added Fragment to our page.
+We simply added Fragment with name **com.example.hello** to our page.
 
 Attribute `auto` means that fragment should be automatically resumed (started) so we don't have to do it manually.
 
