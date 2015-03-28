@@ -60,6 +60,7 @@
 				<h2>Named channel</h2>
 				<section class="description">
 					<p>Channel is created as local variable and added to global registry.</p>
+					<p>This example also demonstrates usage of <strong>onPublish</strong> function.</p>
 				</section>
 				<div id="example-named" class="case">
 					<p>
@@ -135,7 +136,15 @@
 
 						function case2(){
 
-							new Meta.Channel("named-channel");
+							new Meta.Channel({
+								
+								name: "named-channel",
+
+								onPublish: function(message){
+									return message.toUpperCase();
+								}
+
+							});
 
 							/* BIND DOM EVENTS */
 							document.querySelector("#example-named button.publish").addEventListener("click", function(){

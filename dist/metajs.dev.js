@@ -1614,12 +1614,13 @@ if(!window.Meta) window.Meta = {};
 
 window.Meta.channels = {};
 
-window.Meta.Channel = function(name){
+window.Meta.Channel = function(config){
 
 	this.listeners = [];
+	this.config = config || {};
 
-	if(name)
-		window.Meta.channels[name] = this;
+	if(this.config.name)
+		window.Meta.channels[this.config.name] = this;
 
 }
 
@@ -1639,6 +1640,9 @@ window.Meta.Channel.prototype.unsubscribe = function(handler){
 }
 
 window.Meta.Channel.prototype.publish = function(message){
+
+	if(this.config.onPublish)
+		message = this.config.onPublish.call(this, message);
 
 	for(var i = 0; i < this.listeners.length; i++)
 		this.listeners[i](message);
