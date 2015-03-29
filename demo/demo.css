@@ -72,7 +72,7 @@ header p.label {
 #main .demo-item h2 {
 	font-weight: 300;
 	font-size: 30px;
-	margin-bottom: 8px;
+	/*margin-bottom: 8px;*/
 }
 
 #main .demo-item h2 a {
@@ -82,6 +82,7 @@ header p.label {
 #main .demo-item p {
 	color: #333333;
 	font-weight: 300;
+	margin-top: 8px;
 }
 
 /* EXAMPLE */

@@ -385,7 +385,7 @@ window.Meta.Template.attr = function(name, key){
 
 	return function(context){
 
-		if(this instanceof ShadowRoot)
+		if(typeof ShadowRoot !== 'undefined' && this instanceof ShadowRoot)
 			var el = this.host;
 		else
 			var el = this;
@@ -402,7 +402,7 @@ window.Meta.Template.attrIf = function(name, key, empty){
 		
 		var value = window.Meta.Template._value(this, context, key);
 
-		if(this instanceof ShadowRoot)
+		if(typeof ShadowRoot !== 'undefined' && this instanceof ShadowRoot)
 			var el = this.host;
 		else
 			var el = this;
@@ -422,7 +422,7 @@ window.Meta.Template.classIf = function(name, key){
 		
 		var value = window.Meta.Template._value(this, context, key);
 
-		if(this instanceof ShadowRoot)
+		if(typeof ShadowRoot !== 'undefined' && this instanceof ShadowRoot)
 			var el = this.host;
 		else
 			var el = this;
@@ -440,7 +440,7 @@ window.Meta.Template.property = function(name, key){
 
 	return function(context){
 
-		if(this instanceof ShadowRoot)
+		if(typeof ShadowRoot !== 'undefined' && this instanceof ShadowRoot)
 			var el = this.host;
 		else
 			var el = this;
