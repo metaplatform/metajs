@@ -16,6 +16,11 @@ top: true
 ## Overview
 MetaJS templating engine provides data-binding, conditions and loops. It is dom-based which means that it manipulates directly with DOM without text-based re-rendering and re-parsing which provides high performance and flexibility.
 
+### Usability & compatibility
+MetaJS Template library can be used standalone and not depends on WebComponents specification so it works in most modern browsers. See [working demo](http://repo.meta-platform.com/metajs/demo/template-native.html).
+
+Just include `dist/template.min.js`.
+
 ### Concept
 Template engine processes DOM nodes by definition rules. Engine goes throught selectors and executes processing function for every node returned by selector.
 
