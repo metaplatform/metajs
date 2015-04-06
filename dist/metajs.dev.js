@@ -27,7 +27,7 @@ window.Meta.Utils._importedModules = [];
  */
 window.Meta.Utils.import = function(name, onReady, onError){
 
-	if( window.Meta.Utils._importedModules[name] )
+	if( window.Meta.Utils._importedModules.indexOf(name) >= 0 )
 		return onReady();
 
 	var link = document.createElement('link');
@@ -36,7 +36,7 @@ window.Meta.Utils.import = function(name, onReady, onError){
 	link.href = window.Meta.config.importUrl.replace(/\%module\%/g, name);
 
 	link.onload = function() {
-		
+
 		window.Meta.Utils._importedModules.push(name);
 
 		if(onReady) onReady();
@@ -1453,7 +1453,7 @@ window.Meta.Activity = function(name, config){
 /*
  * Create activity shorthand
  */
-window.Meta.CreateActivity = function(target, name){
+window.Meta.CreateActivity = function(target, name, resume){
 
 	if(!window.Meta.activities[name])
 		throw "Activity '" + name + "' not registered.";
@@ -1462,6 +1462,11 @@ window.Meta.CreateActivity = function(target, name){
 	activity.setAttribute('name', name);
 
 	target.appendChild(activity);
+
+	if(resume)
+		activity.resume();
+
+	return activity;
 
 }
 
