@@ -673,7 +673,8 @@ window.Meta.Template.repeat = function(key, definition){
 							data: data
 						}, {
 							parent: context.data,
-							key: i
+							index: i,
+							key: map[i]
 						}));
 
 					if(remainStack[i][r].previousElementSibling != lastElement)
@@ -696,7 +697,8 @@ window.Meta.Template.repeat = function(key, definition){
 						data: data
 					}, {
 						parent: context.data,
-						key: i
+						index: i,
+						key: map[i]
 					}));
 
 					lastElement = el;
