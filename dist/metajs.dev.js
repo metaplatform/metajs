@@ -348,7 +348,7 @@ window.Meta.Template.filter = function(name, key, params){
 
 }
 
-window.Meta.Template.date = function(key, format, empty){
+window.Meta.Template.date = function(format, key, empty){
 
 	return function(context){
 
