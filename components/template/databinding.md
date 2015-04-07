@@ -70,7 +70,7 @@ var tpl = Meta.Template(target, {
 });
 ```
 
-### $__date(format, key)
+### $__date(format, key, emptyValue = "NaN")
 
 Sets element innerHTML to date-formated context value.
 
@@ -80,7 +80,7 @@ Parameter `format` is same as in PHP - see [PHP's date function reference](http:
 
 ```javascript
 var tpl = Meta.Template(target, {
-    "p.published": $__date("d. m. Y H:i", "published"),
+    "p.published": $__date("d. m. Y H:i", "published", "-"),
 });
 ```
 
