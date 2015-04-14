@@ -677,7 +677,7 @@ window.Meta.Template.repeat = function(key, definition){
 						}, {
 							parent: context.data,
 							index: i,
-							key: map[i]
+							key: ( map[i] instanceof Object ? i : map[i] )
 						}));
 
 					if(remainStack[i][r].previousElementSibling != lastElement)
@@ -701,7 +701,7 @@ window.Meta.Template.repeat = function(key, definition){
 					}, {
 						parent: context.data,
 						index: i,
-						key: map[i]
+						key: ( map[i] instanceof Object ? i : map[i] )
 					}));
 
 					lastElement = el;
